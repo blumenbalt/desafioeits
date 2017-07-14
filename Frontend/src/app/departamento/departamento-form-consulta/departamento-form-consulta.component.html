@@ -1,0 +1,28 @@
+<div layout="row" layout-align="start center" class="pad-left-sm pad-right-sm">
+  <button mdTooltip="Fechar" (click)="close()" md-icon-button><md-icon >clear</md-icon></button>
+  <td-search-box [alwaysVisible]="true" #textSearch backIcon="arrow_back" class="push-right-sm" placeholder="Procurar departamento"
+    (searchDebounce)="filtrar(textSearch.value)" flex>
+  </td-search-box>
+</div>
+<md-divider></md-divider>
+<table td-data-table #dataTable>
+  <th td-data-table-column [name]="column.name" [active]="sortBy == column.name" [sortable]="column.sortable" [sortOrder]="order"
+    (sortChange)="sortEvent($event)" *ngFor="let column of columns" [numeric]="column.numeric">
+    {{column.label}}
+  </th>
+  <tr td-data-table-row *ngFor="let departamento of departamentos.content">
+    <td td-data-table-cell>
+      <span>{{departamento.nome}}</span>
+    </td>
+    <td td-data-table-cell>
+      <button mdTooltip="Vincular" (click)="vincularDepartamento($event,departamento.id)" md-icon-button><md-icon >link</md-icon></button>
+    </td>
+  </tr>
+</table>
+<div class="md-padding" *ngIf="!departamentos.content" layout="row" layout-align="center center">
+  <h3>Sem resultados.</h3>
+</div>
+<td-paging-bar #pagingBar [pageSizes]="[5]" [total]="total" (change)="change($event)">
+  <span td-paging-bar-label hide-xs>Departamentos:</span> {{pagingBar.range}} <span hide-xs>de {{pagingBar.total}}</span>
+</td-paging-bar>
+<span flex></span>

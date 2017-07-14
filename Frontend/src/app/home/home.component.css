@@ -1,0 +1,17 @@
+.card
+{
+  width:35%;
+  position: fixed;
+  top: 30%;
+  left:30%;
+}
+p
+{
+word-wrap: break-word;
+}
+
+.icon
+{
+  padding: 0 14px;
+}
+

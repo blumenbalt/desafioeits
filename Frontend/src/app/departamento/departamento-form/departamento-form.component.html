@@ -1,0 +1,64 @@
+<md-card class="card">
+  <form #myForm="ngForm">
+
+    <md-card-title *ngIf="departamento.id">Alterar departamento </md-card-title>
+    <md-card-subtitle *ngIf="departamento.id">Alterar informações do {{departamento.nome}}</md-card-subtitle>
+    <md-card-title *ngIf="!departamento.id">Inserir departamento </md-card-title>
+    <md-card-subtitle *ngIf="!departamento.id">Inserir informações do novo departamento</md-card-subtitle>
+    <!--  ///////////////////////////////////////////////////////////-->
+    <!--  ///////////////////////////////////////////////////////////-->
+    <div layout-gt-xs="row" layout-margin>
+      <md-input-container flex>
+        <input mdInput #nome="ngModel" placeholder="Nome do departamento" [(ngModel)]="departamento.nome" name="departamento.nome"
+          [required]="!departamento.id" tdAutoTrim/>
+        <md-hint>
+          <span [hidden]="nome.pristine || !nome.errors?.required" class="tc-red-600">Obrigatório, até 50 letras.</span>
+        </md-hint>
+      </md-input-container>
+    </div>
+    <!--  ///////////////////////////////////////////////////////////-->
+    <!--  ///////////////////////////////////////////////////////////-->
+    <div layout-gt-xs="row" layout-margin>
+      <md-input-container flex>
+        <input mdInput #descricao="ngModel" flex placeholder="Descrição do departamento" [(ngModel)]="departamento.descricao" name="departamento.descricao"
+          [required]="!departamento.id" tdAutoTrim/>
+        <md-hint>
+          <span [hidden]="descricao.pristine || !descricao.errors?.required" class="tc-red-600">Obrigatório, até 128 letras.</span>
+        </md-hint>
+      </md-input-container>
+    </div>
+
+    <div *ngIf="usuarioAtual?.perfil == 'ROLE_ADMINISTRADOR'">
+    <md-list *ngIf="!departamento.departamento">
+      <md-list-item *ngIf="departamento.id">
+        <button mdTooltip="Listar"  (click)="dialogDepartamentos()"
+        md-icon-button md-list-avatar>
+        <md-icon md-list-avatar >list</md-icon>
+        </button>
+      <h3 md-line>Listar departamentos para vincular </h3>
+      </md-list-item>
+
+    </md-list>
+     <md-list *ngIf="departamento.departamento">
+        <md-list-item>
+          <h4 md-line>{{departamento.departamento.nome}}</h4>
+          <p md-line> Departamento vinculado </p>
+          <md-icon md-list-avatar (click)="desvincularDepartamento($event)"  md-Tooltip="Desvincular">clear</md-icon>
+        </md-list-item>
+    </md-list>
+    </div>
+    <div layout-gt-xs="row" layout-margin>
+    <!--  ///////////////////////////////////////////////////////////-->
+    <!--  ///////////////////////////////////////////////////////////-->
+    </div>
+    <md-divider></md-divider>
+    <div class="inset">
+      <span flex> </span>
+      <button md-button  type="submit" [disabled]="!myForm.valid" (click)="inserirdepartamento($event)" class="text-upper">Salvar</button>
+      <span flex> </span>
+      <button md-button  [routerLink]="['/departamentos']" class="text-upper">Voltar</button>
+    </div>
+    <!--///////////////////////////////////////////////////////////-->
+    <!--///////////////////////////////////////////////////////////-->
+  </form>
+</md-card>

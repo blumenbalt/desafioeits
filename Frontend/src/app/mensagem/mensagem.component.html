@@ -1,0 +1,24 @@
+<md-card class="card">
+  <md-card-header layout="row">
+    <h3>Lista de mensagens do departamento</h3>
+    <span flex> </span>
+    <button md-button (click)=" openPrompt()" mdTooltip="Enviar mensagem à departamento"><md-icon>send</md-icon></button>
+  </md-card-header>
+  <md-list>
+    <md-list-item *ngFor="let mensagem of mensagens.content">
+      <md-icon mdTooltip="{{mensagem.mensagem.data?.dayOfMonth}}/{{mensagem.mensagem.data?.monthValue}}/{{mensagem.mensagem.data?.year}}"
+        md-list-avatar>mail</md-icon>
+      <h5 md-line >{{mensagem.mensagem.texto}}</h5>
+      <p md-line> {{mensagem.usuario.nome}}</p>
+      <button mdTooltip="Deletar" *ngIf="usuarioAtual.id == mensagem.usuario.id"(click)="openConfirm(mensagem.id)" md-icon-button><md-icon md-list-avatar>delete</md-icon></button>
+    </md-list-item>
+  </md-list>
+  <td-paging-bar #pagingBar [firstLast]="true" [pageSizeAll]="false" [pageSizes]="[5,10,20]" pageLinkCount="5" [initialPage]="1"
+    [pageSize]="5" [total]="total" (change)="change($event)">
+    {{pagingBar.range}}
+    <span hide-xs>
+                    of {{pagingBar.total}}
+                </span>
+  </td-paging-bar>
+</md-card>
+

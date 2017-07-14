@@ -1,0 +1,122 @@
+<md-card class="left-card">
+  <md-card-header layout="row">
+    <h4>Lista de usuários </h4>
+    <md-select class="select-filter" placeholder="Opção de filtro" [(ngModel)]="selectedValue" name="opcao">
+      <md-option *ngFor="let opcao of opcoes" [value]="opcao.value">
+        <span>{{opcao.viewValue}}</span>
+      </md-option>
+    </md-select>
+    <span *ngIf="selectedValue == 'todos'">
+    <td-search-box  class="filter" #pesquisaTodos placeholder="Pesquisar por nome" (searchDebounce)="filtrarTodos(pesquisaTodos.value)" flex>
+    </td-search-box>
+    </span>
+    <span *ngIf="selectedValue == 'departamento'">
+    <td-search-box  class="filter" #pesquisaDepartamento placeholder="Pesquisar por nome" (searchDebounce)="filtrarNoDepartamento(pesquisaDepartamento.value)" flex>
+    </td-search-box>
+    </span>
+    <span *ngIf="selectedValue == 'vincular'">
+    <td-search-box  class="filter" #pesquisaUsuario placeholder="Pesquisar por nome" (searchDebounce)="filtrarParaVincular(pesquisaUsuario.value)" flex>
+    </td-search-box>
+    </span>
+  </md-card-header>
+  <table td-data-table>
+    <th td-data-table-column>
+      Nome do usuário
+    </th>
+    <th td-data-table-column *ngIf="usuarioAtual?.perfil == 'ROLE_ADMINISTRADOR'">
+      Vincular/Desvincular
+    </th>
+    <th td-data-table-column>
+      Papel no departamento
+    </th>
+    <tr td-data-table-row *ngFor="let usuario of usuarios.content">
+      <td td-data-table-cell>
+        <span>{{usuario.nome}}</span>
+      </td>
+      <td td-data-table-cell *ngIf="usuarioAtual?.perfil == 'ROLE_ADMINISTRADOR'">
+        <button *ngIf="usuarioAtual?.perfil == 'ROLE_ADMINISTRADOR' && !usuario.departamento" mdTooltip="Vincular" md-button (click)="vincular($event, usuario)">
+          <span>
+              Vincular
+          </span>
+        </button>
+        <button *ngIf="usuarioAtual?.perfil == 'ROLE_ADMINISTRADOR' && usuario.departamento" mdTooltip="Desvincular" md-button (click)="desvincular($event, usuario)">
+          <span>
+              Desvincular
+          </span>
+        </button>
+      </td>
+      <td td-data-table-cell>
+        <span *ngIf="usuarioAtual?.perfil == 'ROLE_ADMINISTRADOR'">
+        <span *ngIf="usuario.departamento && usuario.departamento.id == departamento.id">
+            <md-select class="roles" *ngIf="usuarioAtual?.perfil == 'ROLE_ADMINISTRADOR'"
+         md-line name="papeis" [(ngModel)]="usuario.papel" placeholder="Papel do usuário"
+          flex>
+          <md-option *ngFor="let papel of papeis" [value]="papel.value"
+          (click)="promoverUsuario(usuario.id,papel.value)">
+            {{ papel.viewValue }}
+          </md-option>
+        </md-select>
+      </span>
+        <span *ngIf="!usuario.departamento">
+             Não vinculado
+      </span>
+        <span *ngIf="usuario.departamento && usuario.departamento.id != departamento.id">
+             Vinculado ao {{usuario.departamento.nome}}
+      </span>
+        </span>
+        <span *ngIf="usuarioAtual?.perfil == 'ROLE_COLABORADOR'">
+          <span *ngIf="usuario.departamento && usuario.departamento.id == departamento.id">
+            Vinculado a esse departamento
+          </span>
+        <span *ngIf="!usuario.departamento">
+             Não vinculado
+      </span>
+        <span *ngIf="usuario.departamento && usuario.departamento.id != departamento.id">
+             Vinculado ao {{usuario.departamento.nome}}
+      </span>
+        </span>
+      </td>
+    </tr>
+
+  </table>
+  <td-paging-bar #pagingBar [firstLast]="true" [pageSizeAll]="false" [pageSizes]="[5,10,20]" pageLinkCount="5" [initialPage]="1"
+    [pageSize]="5" [total]="total" (change)="change($event)">
+    {{pagingBar.range}}
+    <span hide-xs>
+                    of {{pagingBar.total}}
+                </span>
+  </td-paging-bar>
+</md-card>
+
+
+
+<!--                                                          -->
+<!--                                                          -->
+<!--                  DEPARTAMENTO DETALHES                   -->
+<!--                                                          -->
+<!--                                                          -->
+
+<md-card class="right-card">
+  <md-card-title>Detalhes do departamento </md-card-title>
+  <md-card-subtitle>Informações do departamento</md-card-subtitle>
+  <md-divider></md-divider>
+  <md-list>
+    <md-list-item>
+      <md-icon md-list-avatar>group</md-icon>
+      <h4 md-line>{{departamento.nome}}</h4>
+      <p md-line>Nome do departamento</p>
+    </md-list-item>
+    <md-divider md-inset></md-divider>
+    <md-list-item>
+      <md-icon md-list-avatar>assignment</md-icon>
+      <h4 md-line>{{departamento.descricao}}</h4>
+      <p md-line>Descrição do departamento</p>
+    </md-list-item>
+    <md-divider md-inset></md-divider>
+    <md-list-item *ngIf="departamento.departamento != null">
+      <md-icon md-list-avatar>assignment</md-icon>
+      <h4 md-line>{{departamento.departamento.nome}}</h4>
+      <p md-line> Departamento vinculado</p>
+    </md-list-item>
+  </md-list>
+</md-card>

@@ -1,0 +1,48 @@
+<md-card class="card">
+  <md-card-header layout="row">
+    <h3>Lista de usuários </h3>
+    <td-search-box #pesquisa placeholder="Pesquisar por nome" (searchDebounce)="listarUsuarios(pesquisa.value)" flex>
+    </td-search-box>
+    <button md-button *ngIf="usuarioAtual?.perfil == 'ROLE_ADMINISTRADOR'" [routerLink]="['/usuarios-novo']" mdTooltip="Adicionar usuário"><md-icon>person_add</md-icon></button>
+  </md-card-header>
+  <table td-data-table #dataTable>
+    <th td-data-table-column
+    [name]="column.name"
+    [active]="sortBy == column.name"
+    [sortable]="column.sortable"
+    [sortOrder]="order"
+    (sortChange)="sortEvent($event)"
+    *ngFor="let column of columns"
+    [numeric]="column.numeric">
+      {{column.label}}
+    </th>
+    <tr td-data-table-row *ngFor="let usuario of usuarios.content">
+      <td td-data-table-cell>
+        <span>{{usuario.nome}}</span>
+      </td>
+      <td td-data-table-cell>
+        <button *ngIf="usuario.ativo && usuarioAtual?.perfil == 'ROLE_ADMINISTRADOR'" mdTooltip="Desativar" md-button (click)="desativar($event, usuario)">
+          <span *ngIf="usuario.ativo">Ativo</span>
+        </button>
+        <button *ngIf="!usuario.ativo && usuarioAtual?.perfil == 'ROLE_ADMINISTRADOR'" mdTooltip="Ativar" md-button (click)="ativar($event, usuario)">
+       <span *ngIf="!usuario.ativo">Inativo</span>
+      </button>
+        <span *ngIf="usuarioAtual?.perfil == 'ROLE_COLABORADOR'">
+       {{usuario.ativo ? 'Ativo' : 'Inativo'}}
+      </span>
+      </td>
+      <td td-data-table-cell>
+        <button mdTooltip="Detalhar" [routerLink]="['/usuarios-detalhar', usuario.id]" md-icon-button><md-icon >info</md-icon></button>
+        <button mdTooltip="Alterar" *ngIf="usuarioAtual?.perfil == 'ROLE_ADMINISTRADOR'" [routerLink]="['/usuarios-alterar', usuario.id]"
+          md-icon-button><md-icon >edit</md-icon></button>
+      </td>
+    </tr>
+  </table>
+  <td-paging-bar #pagingBar [firstLast]="true" [pageSizeAll]="false" [pageSizes]="[5,10,20]" pageLinkCount="5" [initialPage]="1"
+    [pageSize]="5" [total]="total" (change)="change($event)">
+    {{pagingBar.range}}
+    <span hide-xs>
+                    of {{pagingBar.total}}
+                </span>
+  </td-paging-bar>
+</md-card>

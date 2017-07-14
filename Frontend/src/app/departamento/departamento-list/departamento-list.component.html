@@ -1,0 +1,43 @@
+<md-card class="card">
+<md-card-header layout="row">
+    <h3>Lista de departamentos </h3>
+    <td-search-box #pesquisa  placeholder="Pesquisar por nome" (searchDebounce)="filtrar(pesquisa.value)" flex>
+    </td-search-box>
+    <button md-button [routerLink]="['/departamentos-novo']" mdTooltip="Adicionar departamento"><md-icon>group_add</md-icon></button>
+ </md-card-header>
+<table td-data-table>
+   <th td-data-table-column
+   [name]="column.name"
+    [active]="sortBy == column.name"
+    [sortable]="column.sortable"
+    [sortOrder]="order"
+    (sortChange)="sortEvent($event)"
+      *ngFor="let column of columns"
+      [numeric]="column.numeric">
+    {{column.label}}
+  </th>
+  <tr td-data-table-row *ngFor="let departamento of departamentos.content">
+    <td td-data-table-cell>
+    <span>{{departamento.nome}}</span>
+    </td>
+    <td td-data-table-cell>
+    <span>{{departamento.descricao}}</span>
+    </td>
+     <td td-data-table-cell>
+    <span>{{departamento.qtdUsuarios}}</span>
+    </td>
+    <td td-data-table-cell>
+      <button mdTooltip="Detalhar" [routerLink]="['/departamentos-detalhar', departamento.id]" md-icon-button><md-icon >info</md-icon></button>
+      <button mdTooltip="Alterar" [routerLink]="['/departamentos-alterar', departamento.id]" md-icon-button><md-icon >edit</md-icon></button>
+      <button mdTooltip="Excluir" *ngIf="usuarioAtual?.perfil == 'ROLE_ADMINISTRADOR'" (click)="openConfirm(departamento.id)" md-icon-button><md-icon md-list-avatar>delete</md-icon></button>
+    </td>
+  </tr>
+</table>
+<td-paging-bar #pagingBar [firstLast]="true" [pageSizeAll]="false" [pageSizes]="[5,10,20]" pageLinkCount="5" [initialPage]="1"
+    [pageSize]="5" [total]="total" (change)="change($event)">
+    {{pagingBar.range}}
+    <span hide-xs>
+                    of {{pagingBar.total}}
+                </span>
+  </td-paging-bar>
+</md-card>

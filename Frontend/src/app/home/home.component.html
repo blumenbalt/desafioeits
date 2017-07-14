@@ -1,0 +1,17 @@
+<md-card class="card">
+  <md-card-header>
+    <md-card-title>Bem vindo {{usuarioAtual?.nome}} </md-card-title>
+  </md-card-header>
+  <md-card-content>
+    <md-list>
+      <md-list-item>
+        <h4 md-line>Última mensagem : </h4>
+        <p md-line mdTooltip="{{mensagem?.mensagem?.data?.dayOfMonth}}/{{mensagem?.mensagem?.data?.monthValue}}/{{mensagem?.mensagem?.data?.year}}">
+        {{mensagem?.mensagem?.texto}} </p>
+      </md-list-item>
+    </md-list>
+  </md-card-content>
+  <md-card-actions>
+    <button md-button class="button" routerLink="mensagens">Ver mensagens antigas <md-icon class="icon">mail</md-icon></button>
+  </md-card-actions>
+</md-card>

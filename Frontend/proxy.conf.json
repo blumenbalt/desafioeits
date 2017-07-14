@@ -1,0 +1,21 @@
+{
+	"/projeto": {
+		"target": "http://127.0.0.1:8080/projeto",
+		"changeOrigin": true,
+		"secure": false,
+		"pathRewrite": {
+			"^/projeto": ""
+		},
+		"logLevel": "debug"
+	},
+
+	"/static": {
+		"target": "http://127.0.0.1:8080/projeto/static",
+		"changeOrigin": true,
+		"secure": false,
+		"pathRewrite": {
+			"^/static": ""
+		},
+		"logLevel": "debug"
+	}
+}

@@ -1,0 +1,106 @@
+<md-card class="card">
+  <form #myForm="ngForm">
+
+    <md-card-title *ngIf="usuario.id">Alterar usuário </md-card-title>
+    <md-card-subtitle *ngIf="usuario.id">Alterar informações de {{usuario.nome}}</md-card-subtitle>
+    <md-card-title *ngIf="!usuario.id">Inserir usuário </md-card-title>
+    <md-card-subtitle *ngIf="!usuario.id">Inserir informações de um novo usuário</md-card-subtitle>
+    <!--  ///////////////////////////////////////////////////////////-->
+    <!--  ///////////////////////////////////////////////////////////-->
+    <div layout-gt-xs="row" layout-margin>
+      <md-input-container flex>
+        <input mdInput #nome="ngModel" placeholder="Nome do usuário" [(ngModel)]="usuario.nome" name="nome" [required]="!usuario.id"
+          tdAutoTrim/>
+        <md-hint>
+          <span [hidden]="nome.pristine || !nome.errors?.required" class="tc-red-600">Obrigatório, até 24 letras.</span>
+        </md-hint>
+      </md-input-container>
+    </div>
+    <!--  ///////////////////////////////////////////////////////////-->
+    <!--  ///////////////////////////////////////////////////////////-->
+    <div *ngIf="!usuario.id">
+      <div layout-gt-xs="row" layout-margin>
+        <md-input-container flex>
+          <input mdInput #senha flex placeholder="Senha do usuário" type="password" [(ngModel)]="usuario.senha" name="senha"
+            [required]="!usuario.id" tdAutoTrim/>
+          <md-hint>
+            <span [hidden]="senha.pristine || !senha.errors?.required" class="tc-red-600">Obrigatório, até 24 letras.</span>
+          </md-hint>
+        </md-input-container>
+      </div>
+      <!--  ///////////////////////////////////////////////////////////-->
+      <!--  ///////////////////////////////////////////////////////////-->
+      <div layout-gt-xs="row" layout-margin>
+        <md-input-container flex>
+          <input mdInput #confirmarSenha flex placeholder="Confirmar senha do usuário" type="password" [(ngModel)]="usuario.confirmarSenha"
+            name="confirmarsenha" tdAutoTrim/>
+          <md-hint>
+            <span *ngIf="(confirmarSenha.value != senha.value) && myForm.form.submitted" class="tc-red-600">
+             <span [hidden]="confirmarSenha.pristine || !confirmarSenha.errors?.required" >Senhas não conferem</span>
+            </span>
+          </md-hint>
+        </md-input-container>
+      </div>
+    </div>
+    <!--  ///////////////////////////////////////////////////////////-->
+    <!--  ///////////////////////////////////////////////////////////-->
+    <div layout-gt-xs="row" layout-margin>
+      <md-input-container flex>
+        <input mdInput #email="ngModel" flex placeholder="Email do usuário" [(ngModel)]="usuario.email" name="usuario.email" [required]="!usuario.id"
+          tdAutoTrim/>
+        <md-hint>
+          <span [hidden]="email.pristine || !email.errors?.required" class="tc-red-600">Obrigatório, até 64 letras.</span>
+        </md-hint>
+      </md-input-container>
+    </div>
+    <!--  ///////////////////////////////////////////////////////////-->
+    <!--  ///////////////////////////////////////////////////////////-->
+    <div layout-gt-xs="row" layout-margin>
+      <md-select required name="perfil" [(ngModel)]="usuario.perfil" placeholder="Perfil de usuário" flex>
+        <md-option *ngFor="let perfil of perfis" [value]="perfil.value">
+          {{ perfil.viewValue }}
+        </md-option>
+      </md-select>
+      <span flex></span>
+      <span flex></span>
+    </div>
+    <!--  ///////////////////////////////////////////////////////////-->
+    <!--  ///////////////////////////////////////////////////////////-->
+    <md-list>
+    <md-list-item *ngIf="usuario.id"(click)="fade()">
+      <md-icon mdTooltip="Alterar senha" md-list-avatar>lock</md-icon>
+      <h4 md-line>Alterar senha</h4>
+    </md-list-item>
+    </md-list>
+    <div [tdFade]="fadeDiv">
+      <form #senhaForm="ngForm" class="md-padding" layout="column">
+
+        <md-input-container flex>
+          <input mdInput [required]="usuario.id" #novaSenha maxlength="50" mdInput tdAutoTrim type="password" name="password" [(ngModel)]="usuario.senha"
+            placeholder="Nova senha" />
+        </md-input-container>
+        <md-input-container flex>
+          <input mdInput [required]="usuario.id" #confirmarNovaSenha maxlength="50" mdInput tdAutoTrim type="password" name="confirmPassword"
+            [(ngModel)]="usuario.confirmarSenha" placeholder="Confirme a senha" />
+        </md-input-container>
+        <md-hint>
+          <span *ngIf="(novaSenha.value != confirmarNovaSenha.value)  && senhaForm.submitted" class="tc-red-600">
+                                <span [hidden]="confirmarNovaSenha.pristine" >Senhas não conferem</span>
+          </span>
+        </md-hint>
+        <div layout="row" layout-margin layout-align="end center">
+          <button md-button [disabled]="senhaForm.form.invalid" color="accent" (click)="mudarSenha(usuario)" class="text-upper">Salvar senha</button>
+        </div>
+      </form>
+    </div>
+    <md-divider></md-divider>
+    <div class="inset">
+      <span flex> </span>
+      <button md-button color="grey" type="submit" [disabled]="myForm.form.invalid" (click)="inserirUsuario($event)" class="text-upper">Salvar</button>
+      <span flex> </span>
+      <button md-button style="color:red" [routerLink]="['/usuarios']" class="text-upper">Cancelar</button>
+      <!--<button md-button style="color:greenyellow" (click)="fade()" class="text-upper">Alterar senha</button>-->
+    </div>
+
+  </form>
+</md-card>

@@ -9,23 +9,38 @@ import projeto.domain.entity.Usuario;
 import projeto.domain.repository.IUsuarioRepository;
 
 @Service
-public class AppUserDetailsService	implements UserDetailsService
+public class AppUserDetailsService implements UserDetailsService 
 {
+	/*------------------------------------------------------------------------
+	 * 
+	 * 							ATRIBUTOS
+	 * 
+	 *-----------------------------------------------------------------------*/
+
+	/**
+	 * 
+	 */
 	@Autowired
 	private IUsuarioRepository usuarioRepository;
-	
-	
-	public Usuario loadUserByUsername(String email)
+
+	/*------------------------------------------------------------------------
+	 * 
+	 * 							SERVIÇOS
+	 * 
+	 *-----------------------------------------------------------------------*/
+
+	/**
+	 * 
+	 */
+	public Usuario loadUserByUsername(String email) 
 	{
-		try
+		try 
 		{
-			return  usuarioRepository.findByEmailAndAtivo("admin@admin.com");
-		} 
-		catch (Exception e)
+			return usuarioRepository.findByEmailAndAtivo(email);
+		} catch (Exception e) 
 		{
 			throw new UsernameNotFoundException("Usuário não encontrado.");
-}
+		}
 	}
 
-	
 }

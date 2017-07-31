@@ -8,9 +8,9 @@
     <md-list-item *ngFor="let mensagem of mensagens.content">
       <md-icon mdTooltip="{{mensagem.mensagem.data?.dayOfMonth}}/{{mensagem.mensagem.data?.monthValue}}/{{mensagem.mensagem.data?.year}}"
         md-list-avatar>mail</md-icon>
-      <h5 md-line >{{mensagem.mensagem.texto}}</h5>
+      <h5 md-line>{{mensagem.mensagem.texto}}</h5>
       <p md-line> {{mensagem.usuario.nome}}</p>
-      <button mdTooltip="Deletar" *ngIf="usuarioAtual.id == mensagem.usuario.id"(click)="openConfirm(mensagem.id)" md-icon-button><md-icon md-list-avatar>delete</md-icon></button>
+      <button mdTooltip="Deletar" *ngIf="usuarioAtual.id == mensagem.usuario.id" (click)="openConfirm(mensagem.id)" md-icon-button><md-icon md-list-avatar>delete</md-icon></button>
     </md-list-item>
   </md-list>
   <td-paging-bar #pagingBar [firstLast]="true" [pageSizeAll]="false" [pageSizes]="[5,10,20]" pageLinkCount="5" [initialPage]="1"
@@ -21,4 +21,3 @@
                 </span>
   </td-paging-bar>
 </md-card>
-

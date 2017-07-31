@@ -11,13 +11,51 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./departamento-form.component.css']
 })
 export class DepartamentoFormComponent {
+
+  /*------------------------------------------------------------------------
+	 *
+	 * 							ATRIBUTOS
+	 *
+	 *-----------------------------------------------------------------------*/
+
+  /**
+   *
+   */
   usuarioAtual: Object;
+
+  /**
+   *
+   */
   departamento: Object = {};
+
+  /**
+   *
+   */
   departamentos: Object[] = [];
+
+  /**
+   *
+   */
   fadeDiv: boolean = true;
+
+  /**
+   *
+   */
   id;
+
+  /**
+   *
+   */
   nome;
+
+  /**
+   *
+   */
   descricao;
+
+  /**
+   *
+   */
   dialogRef: MdDialogRef<DepartamentoFormConsultaComponent>
   /**
    *
@@ -27,14 +65,22 @@ export class DepartamentoFormComponent {
    *
    */
 
+  /*------------------------------------------------------------------------
+	 *
+	 * 							CONSTRUCTOR
+	 *
+	 *-----------------------------------------------------------------------*/
+
   // tslint:disable-next-line:max-line-length
   constructor(public dialog: MdDialog,
-   public usuarioService: UsuarioService,
+    public usuarioService: UsuarioService,
     public departamentoService: DepartamentoService,
-     public snackBar: MdSnackBar,
-      public router: Router,
-       public activatedRouter: ActivatedRoute) {
-    activatedRouter.params.subscribe(params => {
+    public snackBar: MdSnackBar,
+    public router: Router,
+    public activatedRouter: ActivatedRoute)
+    {
+    activatedRouter.params.subscribe(params =>
+    {
 
       this.id = params['id'];
 
@@ -42,14 +88,18 @@ export class DepartamentoFormComponent {
 
     });
     usuarioService.usuarioAtual().subscribe(usuario =>
-      {
-        this.usuarioAtual = usuario;
-      },
+    {
+      this.usuarioAtual = usuario;
+    },
       erro => console.log(erro));
 
   }
 
-
+  /*------------------------------------------------------------------------
+     *
+     * 							MÉTODOS
+     *
+     *-----------------------------------------------------------------------*/
 
   /**
      *                 SNACKBAR
@@ -68,16 +118,21 @@ export class DepartamentoFormComponent {
   inserirdepartamento(event)
   {
 
-    this.departamentoService.formarDepartamento(this.departamento).subscribe(() => {
+    this.departamentoService.formarDepartamento(this.departamento).subscribe(() =>
+    {
       this.router.navigate(['/departamentos']);
       this.openSnackBar('Departamento salvo ', 'Sucesso');
     },
-      erro => {
+      erro =>
+      {
         console.log(erro);
         this.openSnackBar(erro._body, 'Erro');
       });
   }
 
+/**
+ *  VINCULAR DEPARTAMENTOS CONSULTA
+ */
   dialogDepartamentos()
   {
     let dialog = this.dialog.open(DepartamentoFormConsultaComponent,
@@ -88,23 +143,28 @@ export class DepartamentoFormComponent {
       }
     )
 
-    dialog.afterClosed().subscribe( ( result ) => {
+    dialog.afterClosed().subscribe((result) =>
+    {
       this.departamentoService.detalharDepartamento(this.id).subscribe(departamento => this.departamento = departamento, erro => console.log(erro));
     })
   }
 
+/**
+ *
+ * @param evento
+ */
   desvincularDepartamento(evento)
   {
-    this.departamentoService.desvincularDepartamento(this.id).subscribe(()=>
+    this.departamentoService.desvincularDepartamento(this.id).subscribe(() =>
     {
-      this.openSnackBar('Departamento desvinculado','');
+      this.openSnackBar('Departamento desvinculado', '');
       this.departamentoService.detalharDepartamento(this.id).subscribe(departamento => this.departamento = departamento, erro => console.log(erro));
     }),
-    erro =>
-    {
-      console.log(erro);
-      this.openSnackBar('Não foi possível desvincular departamento', 'Erro');
-    }
+      erro =>
+      {
+        console.log(erro);
+        this.openSnackBar('Não foi possível desvincular departamento', 'Erro');
+      }
   }
 
 

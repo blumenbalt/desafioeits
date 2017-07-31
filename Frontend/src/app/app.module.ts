@@ -33,6 +33,7 @@ import {
   CovalentExpansionPanelModule,
   CovalentLoadingModule,
   CovalentPagingModule,
+  CovalentFileModule,
 } from '@covalent/core';
 import { UsuarioListComponent } from './usuario/usuario-list/usuario-list.component';
 import { UsuarioFormComponent } from './usuario/usuario-form/usuario-form.component';
@@ -66,6 +67,7 @@ import { DepartamentoFormConsultaComponent } from './departamento/departamento-f
 
   ],
   imports: [
+    CovalentFileModule,
     MdDialogModule,
     CovalentPagingModule,
     MdCheckboxModule,

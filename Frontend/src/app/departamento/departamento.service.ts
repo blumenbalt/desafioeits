@@ -6,23 +6,41 @@ import { Http, Headers, Response } from '@angular/http';
 @Injectable()
 export class DepartamentoService
 {
-    headers: Headers;
-    urlDepartamento: String = '/projeto/departamento';
-    urlUsuarioDepartamento: String = '/projeto/usuariodepartamento';
+
+  /*------------------------------------------------------------------------
+   *
+   * 							ATRIBUTOS
+   *
+   *-----------------------------------------------------------------------*/
+  headers: Headers;
+  urlDepartamento: String = '/projeto/api/departamento';
 
 
-     constructor(public http: Http)
+
+  /*------------------------------------------------------------------------
+     *
+     * 							CONSTRUCTOR
+     *
+     *-----------------------------------------------------------------------*/
+
+  constructor(public http: Http)
   {
     this.headers = new Headers();
     this.headers.append('Content-Type', 'application/json');
   }
+
+  /*------------------------------------------------------------------------
+   *
+   * 							MÉTODOS
+   *
+   *-----------------------------------------------------------------------*/
   /**
    *
    *   LISTAR TODOS DEPARTAMENTOS
    */
-    listarTodosDepartamentos(page: number, size: number): Observable<PageRequest>
+  listarTodosDepartamentos(page: number, size: number): Observable<PageRequest>
   {
-    return this.http.get(this.urlDepartamento + '/' +  page + '/' + size).map(res => res.json());
+    return this.http.get(this.urlDepartamento + '/' + page + '/' + size).map(res => res.json());
   }
 
   /**
@@ -31,7 +49,7 @@ export class DepartamentoService
    */
   listarDepartamentoPorNome(page: number, size: number, property: String, order: String, textSearch: String): Observable<PageRequest>
   {
-    return this.http.get(this.urlDepartamento + '/' +  page + '/' + size + '/' + property + '/' + order + '/' + textSearch).map(res => res.json());;
+    return this.http.get(this.urlDepartamento + '/' + page + '/' + size + '/' + property + '/' + order + '/' + textSearch).map(res => res.json());;
   }
 
 
@@ -42,7 +60,7 @@ export class DepartamentoService
    */
   listarDepartamentoTirandoId(id, page: number, size: number): Observable<PageRequest>
   {
-    return this.http.get(this.urlDepartamento + '/not/' + id  + '/' +  page + '/' + size).map(res => res.json());
+    return this.http.get(this.urlDepartamento + '/not/' + id + '/' + page + '/' + size).map(res => res.json());
   }
 
   /**
@@ -54,7 +72,7 @@ export class DepartamentoService
    */
   listarDepartamentoPorNomeTirandoId(id, page: number, size: number, property: String, order: String, textSearch: String): Observable<PageRequest>
   {
-    return this.http.get(this.urlDepartamento + '/not/' + id + '/' +  page + '/' + size + '/' + property + '/' + order + '/' + textSearch).map(res=> res.json());
+    return this.http.get(this.urlDepartamento + '/not/' + id + '/' + page + '/' + size + '/' + property + '/' + order + '/' + textSearch).map(res => res.json());
   }
 
   /**
@@ -62,9 +80,9 @@ export class DepartamentoService
    *
    * VINCULAR DEPARTAMENTO
    */
-  vincularDepartamento(id,idpai): Observable<Response>
+  vincularDepartamento(id, idpai): Observable<Response>
   {
-    return this.http.patch(this.urlDepartamento + '/' + id + '/' + idpai, JSON.stringify(id,idpai), { headers: this.headers });
+    return this.http.patch(this.urlDepartamento + '/' + id + '/' + idpai, JSON.stringify(id, idpai), { headers: this.headers });
   }
 
   /**
@@ -72,34 +90,34 @@ export class DepartamentoService
    *
    * DESVINCULAR DEPARTAMENTO
    */
-    desvincularDepartamento(id): Observable<Response>
+  desvincularDepartamento(id): Observable<Response>
   {
-    return this.http.patch(this.urlDepartamento + '/' + id , JSON.stringify(id), { headers: this.headers });
+    return this.http.patch(this.urlDepartamento + '/' + id, JSON.stringify(id), { headers: this.headers });
   }
-   /**
-     *
-     *
-     *   DETALHAR DEPARTAMENTO
-     */
-   detalharDepartamento(id): Observable<Response>
+  /**
+    *
+    *
+    *   DETALHAR DEPARTAMENTO
+    */
+  detalharDepartamento(id): Observable<Response>
   {
-    return this.http.get(this.urlDepartamento +'/'+ id).map(res => res.json());
+    return this.http.get(this.urlDepartamento + '/' + id).map(res => res.json());
   }
 
   /**
    *
    * @param departamento
    */
-  formarDepartamento(departamento):Observable<Response>
+  formarDepartamento(departamento): Observable<Response>
   // tslint:disable-next-line:one-line
   {
-    if(departamento.id != undefined)
+    if (departamento.id != undefined)
     {
       /**
        *
        *    ALTERAR DEPARTAMENTO
        */
-      return this.http.put(this.urlDepartamento + '', JSON.stringify(departamento), {headers:this.headers});
+      return this.http.put(this.urlDepartamento + '', JSON.stringify(departamento), { headers: this.headers });
     }
     else
     {
@@ -107,7 +125,7 @@ export class DepartamentoService
        *    INSERIR DEPARTAMENTO
        *
        */
-      return this.http.post(this.urlDepartamento + '', JSON.stringify(departamento), {headers:this.headers});
+      return this.http.post(this.urlDepartamento + '', JSON.stringify(departamento), { headers: this.headers });
     }
 
 
@@ -119,26 +137,7 @@ export class DepartamentoService
    */
   deleteDepartamento(id): Observable<Response>
   {
-     return this.http.delete(this.urlDepartamento + '/' + id);
+    return this.http.delete(this.urlDepartamento + '/' + id);
   }
-
-
-
-/**
- *
- *
- *
- *
- *
- *
- *
- *
- */
-
-
-
-
-
-
 
 }

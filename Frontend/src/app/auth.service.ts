@@ -8,28 +8,46 @@ import { CanActivate, RouterStateSnapshot, ActivatedRouteSnapshot, Router } from
 @Injectable()
 export class AuthService implements CanActivate
 {
-  usuarioAtual : Usuario;
 
-  constructor ( public usuarioService: UsuarioService, public router: Router)
+  /*------------------------------------------------------------------------
+   *
+   * 							ATRIBUTOS
+   *
+   *-----------------------------------------------------------------------*/
+
+  usuarioAtual: Usuario;
+
+  /*------------------------------------------------------------------------
+     *
+     * 							CONSTRUTOR
+     *
+     *-----------------------------------------------------------------------*/
+
+  constructor(public usuarioService: UsuarioService, public router: Router)
   {
     usuarioService.usuarioAtual().subscribe(usuario =>
     {
       this.usuarioAtual = usuario;
     },
-    erro => console.log(erro));
+      erro => console.log(erro));
   }
 
+  /*------------------------------------------------------------------------
+     *
+     * 							MÉTODOS
+     *
+     *-----------------------------------------------------------------------*/
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): boolean | Observable<boolean>
   {
-    if ( this.usuarioAtual.perfil == 'ROLE_ADMINISTRADOR' && this.usuarioAtual.ativo == true )
+    if (this.usuarioAtual.perfil == 'ROLE_ADMINISTRADOR' && this.usuarioAtual.ativo == true)
     {
       return true;
     }
-      this.router.navigate(['/acesso-negado']);
+    this.router.navigate(['/acesso-negado']);
 
-      return false;
+    return false;
   }
 }

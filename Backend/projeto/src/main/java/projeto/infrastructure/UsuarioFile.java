@@ -6,10 +6,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,24 +21,24 @@ public class UsuarioFile
 	/**
 	 * 
 	 */
-	@Autowired
-	private HttpServletRequest request;
+	
 	
 	/*-------------------------------------------------------------------
 	 *                          BEHAVIORS
 	 *-------------------------------------------------------------------*/
+	
 	/**
 	 * 
 	 * @param baseFolder
 	 * @param file
 	 * @return
 	 */
-	public String write(String baseFolder, MultipartFile file)
+	public String write(MultipartFile file, Long id)
 	{
 		try 
 		{
-			String realPath = request.getServletContext().getRealPath("/" + baseFolder);
-			String path = realPath + "/" + file.getOriginalFilename();
+			String filePath = "/home/eits02/Área de Trabalho/Desafio eits/usuario-files/";
+			String path = filePath +  file.getOriginalFilename();
 			file.transferTo(new File(path));
 			return path;
 			
@@ -60,12 +58,12 @@ public class UsuarioFile
 	 */
 	public void read(HttpServletResponse response, Long id, String path) throws IOException
 	{
-		String filePath = "/home/eits02/workspace/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/wtpwebapps/projeto/usuario-files/" + path;
+		String filePath = "/home/eits02/Área de Trabalho/Desafio eits/usuario-files/" + path;
 
 		File file = new File(filePath);
 		if (!file.exists())
 	    {
-	        throw new FileNotFoundException("O equipamento não possui manual!");
+	        throw new FileNotFoundException("o usuário não possui contrato");
 	    }
 		
 	    InputStream in = new FileInputStream(file);

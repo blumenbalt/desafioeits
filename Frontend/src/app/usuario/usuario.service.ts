@@ -7,27 +7,53 @@ import { Usuario } from "app/usuario";
 @Injectable()
 export class UsuarioService
 {
-    headers: Headers;
-    url: String = '/projeto/usuario';
+  /*------------------------------------------------------------------------
+   *
+   * 							ATRIBUTOS
+   *
+   *-----------------------------------------------------------------------*/
 
-     constructor(public http: Http)
+  /**
+   *
+   */
+  headers: Headers;
+
+  /**
+   *
+   */
+  url: String = '/projeto/api/usuario';
+
+
+  /*------------------------------------------------------------------------
+     *
+     * 							CONSTRUCTOR
+     *
+     *-----------------------------------------------------------------------*/
+  constructor(public http: Http)
   {
     this.headers = new Headers();
     this.headers.append('Content-Type', 'application/json');
   }
 
+  /*------------------------------------------------------------------------
+     *
+     * 							MÉTODOS
+     *
+     *-----------------------------------------------------------------------*/
   usuarioAtual(): Observable<Usuario>
   {
     return this.http.get(this.url + '/atual').map(res => res.json());;
   }
+
   /**
    *
    * LISTAR USUARIOS
    */
-   listarUsuario(page: number, size: number): Observable<PageRequest>
+  listarUsuario(page: number, size: number): Observable<PageRequest>
   {
-    return this.http.get(this.url + '/' +  page + '/' + size).map(res => res.json());;
+    return this.http.get(this.url + '/' + page + '/' + size).map(res => res.json());;
   }
+
   /**
    *
    *
@@ -35,7 +61,7 @@ export class UsuarioService
    */
   listarUsuarioPorNome(page: number, size: number, property: String, order: String, textSearch: String): Observable<PageRequest>
   {
-    return this.http.get(this.url + '/' +  page + '/' + size + '/' + property + '/' + order + '/' + textSearch).map(res => res.json());;
+    return this.http.get(this.url + '/' + page + '/' + size + '/' + property + '/' + order + '/' + textSearch).map(res => res.json());;
   }
 
   /**
@@ -44,7 +70,7 @@ export class UsuarioService
    *   ATIVAR USUÁRIO
    */
 
-   ativarUsuario(usuario): Observable<Response>
+  ativarUsuario(usuario): Observable<Response>
   {
     return this.http.patch(this.url + '/on/' + usuario.id, JSON.stringify(usuario), { headers: this.headers });
   }
@@ -54,34 +80,35 @@ export class UsuarioService
    *
    *    DESATIVAR USUARIO
    */
-   desativarUsuario(usuario): Observable<Response>
+  desativarUsuario(usuario): Observable<Response>
   {
     return this.http.patch(this.url + '/off/' + usuario.id, JSON.stringify(usuario), { headers: this.headers });
   }
-    /**
-     *
-     *
-     *   DETALHAR USUARIO
-     */
-   detalharUsuario(id): Observable<Response>
+
+  /**
+   *
+   *
+   *   DETALHAR USUARIO
+   */
+  detalharUsuario(id): Observable<Usuario>
   {
-    return this.http.get(this.url +'/'+ id).map(res => res.json());
+    return this.http.get(this.url + '/' + id).map(res => res.json());
   }
 
   /**
    *
    * @param usuario
    */
-  formarUsuario(usuario):Observable<Response>
+  formarUsuario(usuario): Observable<Response>
   // tslint:disable-next-line:one-line
   {
-    if(usuario.id != undefined)
+    if (usuario.id != undefined)
     {
       /**
        *
        *    ALTERAR USUARIO
        */
-      return this.http.put(this.url + '', JSON.stringify(usuario), {headers:this.headers});
+      return this.http.put(this.url + '', JSON.stringify(usuario), { headers: this.headers });
     }
     else
     {
@@ -89,7 +116,7 @@ export class UsuarioService
        *    INSERIR USUARIO
        *
        */
-      return this.http.post(this.url + '', JSON.stringify(usuario), {headers:this.headers});
+      return this.http.post(this.url + '', JSON.stringify(usuario), { headers: this.headers });
     }
 
   }
@@ -97,7 +124,7 @@ export class UsuarioService
   /**
    *   ALTERAR SENHA DO USUÁRIO
    */
-    alterarSenha(usuario): Observable<Response>
+  alterarSenha(usuario): Observable<Response>
   {
     return this.http.put(this.url + '/senha', JSON.stringify(usuario), { headers: this.headers });
   }
@@ -107,61 +134,83 @@ export class UsuarioService
    *
    *  LISTAR TODOS ATIVOS
    */
-    listarAtivos(page: number, size: number): Observable<PageRequest>
-    {
-      return this.http.get(this.url + '/ativos'+ '/' +  page + '/' + size).map(res => res.json());
-    }
-    /**
-     *
-     * LISTAR ATIVOS POR NOME
-     */
-    listarAtivosPorNome(page: number, size: number, property: String, order: String, textSearch: String): Observable<PageRequest>
-    {
-      return this.http.get(this.url + '/ativos' + + '/' +  page + '/' + size + '/' + property + '/' + order + '/' + textSearch).map(res => res.json());
-    }
-    /**
-     * LISTAR POR DEPARTAMENTO
-     */
-    listarPorDepartamento(id, page: number, size: number): Observable<PageRequest>
-    {
-      return this.http.get(this.url + '/departamento/' + id + '/' +  page + '/' + size).map(res => res.json());
-    }
-    /**
-     *
-     * LISTAR POR DEPARTAMENTO E POR NOME
-     */
-    listarPorDepartamentoPorNome(id, page: number, size: number, property: String, order: String, textSearch: String): Observable<PageRequest>
-    {
-      return this.http.get(this.url + '/departamento/' + id + '/' +  page + '/' + size + '/' + property + '/' + order + '/' + textSearch).map(res => res.json());
-    }
-    /**
-     * LISTAR USUARIOS PARA VINCULAR
-     */
-    listarParaVincular(page: number, size: number): Observable<PageRequest>
-    {
-      return this.http.get(this.url + '/vincular' + '/' +  page + '/' + size).map(res => res.json());
-    }
-    /**
-     * LISTAR USUARIOS PARA VINCULAR POR NOME
-     */
-    listarParaVincularPorNome(page: number, size: number, property: String, order: String, textSearch: String): Observable<PageRequest>
-    {
-      return this.http.get(this.url + '/vincular' + '/' +  page + '/' + size + '/' + property + '/' + order + '/' + textSearch).map(res => res.json());
-    }
+  listarAtivos(page: number, size: number): Observable<PageRequest>
+  {
+    return this.http.get(this.url + '/ativos' + '/' + page + '/' + size).map(res => res.json());
+  }
+
+  /**
+   *
+   * LISTAR ATIVOS POR NOME
+   */
+  listarAtivosPorNome(page: number, size: number, property: String, order: String, textSearch: String): Observable<PageRequest>
+  {
+    return this.http.get(this.url + '/ativos' + + '/' + page + '/' + size + '/' + property + '/' + order + '/' + textSearch).map(res => res.json());
+  }
+
+  /**
+   * LISTAR POR DEPARTAMENTO
+   */
+  listarPorDepartamento(id, page: number, size: number): Observable<PageRequest>
+  {
+    return this.http.get(this.url + '/departamento/' + id + '/' + page + '/' + size).map(res => res.json());
+  }
+
+  /**
+   *
+   * LISTAR POR DEPARTAMENTO E POR NOME
+   */
+  listarPorDepartamentoPorNome(id, page: number, size: number, property: String, order: String, textSearch: String): Observable<PageRequest>
+  {
+    return this.http.get(this.url + '/departamento/' + id + '/' + page + '/' + size + '/' + property + '/' + order + '/' + textSearch).map(res => res.json());
+  }
+
+  /**
+   * LISTAR USUARIOS PARA VINCULAR
+   */
+  listarParaVincular(page: number, size: number): Observable<PageRequest>
+  {
+    return this.http.get(this.url + '/vincular' + '/' + page + '/' + size).map(res => res.json());
+  }
+
+  /**
+   * LISTAR USUARIOS PARA VINCULAR POR NOME
+   */
+  listarParaVincularPorNome(page: number, size: number, property: String, order: String, textSearch: String): Observable<PageRequest>
+  {
+    return this.http.get(this.url + '/vincular' + '/' + page + '/' + size + '/' + property + '/' + order + '/' + textSearch).map(res => res.json());
+  }
 
 
-     vincularUsuario(usuario, departamentoId): Observable<Response>
+  vincularUsuario(usuario, departamentoId): Observable<Response>
   {
     return this.http.patch(this.url + '/vincular/' + usuario.id + '/' + departamentoId, JSON.stringify(usuario), { headers: this.headers });
   }
 
-    desvincularUsuario(usuario): Observable<Response>
+  desvincularUsuario(usuario): Observable<Response>
   {
-    return this.http.patch(this.url + '/desvincular/' + usuario.id , JSON.stringify(usuario), { headers: this.headers });
+    return this.http.patch(this.url + '/desvincular/' + usuario.id, JSON.stringify(usuario), { headers: this.headers });
   }
 
-    promoverUsuario(id,papel): Observable<Response>
+  promoverUsuario(id, papel): Observable<Response>
   {
-     return this.http.patch(this.url + '/role/' + id + '/papel=' + papel, {headers:this.headers});
+    return this.http.patch(this.url + '/role/' + id + '/papel=' + papel, { headers: this.headers });
+  }
+
+  deletarContrato(id: Number)
+  {
+    return this.http.delete(this.url + '/clearFile/' + id);
+  }
+
+  downloadContrato(id: Number)
+  {
+    return this.http.get(this.url + '/downloadFile/' + id);
+  }
+
+  uploadContrato(file: FormData, id: Number): Observable<Response>
+  {
+    return this.http.post(this.url + '/uploadFile/' + id, file);
   }
 }
+
+

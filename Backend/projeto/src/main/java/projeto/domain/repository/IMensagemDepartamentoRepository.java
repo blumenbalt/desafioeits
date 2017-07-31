@@ -12,11 +12,23 @@ import org.springframework.stereotype.Repository;
 import projeto.domain.entity.MensagemDepartamento;
 
 @Repository
-public interface IMensagemDepartamentoRepository extends JpaRepository<MensagemDepartamento, Long>{
+public interface IMensagemDepartamentoRepository extends JpaRepository<MensagemDepartamento, Long>
+{
 
+	/**
+	 * 
+	 * @param departamentoId
+	 * @return
+	 */
 	List<MensagemDepartamento> findByDepartamentoId(Long departamentoId);
 	
 	
+	/**
+	 * 
+	 * @param usuarioId
+	 * @param pageable
+	 * @return
+	 */
 	@Query("SELECT u  "
 				+ "FROM MensagemDepartamento u  "
 				+ "WHERE departamento.id IN (  "
@@ -25,6 +37,11 @@ public interface IMensagemDepartamentoRepository extends JpaRepository<MensagemD
 					+ " WHERE id = :usuarioId )")
 	public Page<MensagemDepartamento> findByUsuarioId(@Param("usuarioId")Long usuarioId,Pageable pageable);
 	
+	/**
+	 * 
+	 * @param usuarioId
+	 * @return
+	 */
 	@Query(" SELECT u "
 			+ "FROM MensagemDepartamento u "
 			+ "WHERE u.id IN ( "

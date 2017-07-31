@@ -18,9 +18,21 @@ import projeto.domain.service.EmailService;
 @PropertySource({"classpath:env/mail.properties"})
 public class MailConfig 
 {
+	/*------------------------------------------------------------------------
+	 * 
+	 * 							ATRIBUTOS
+	 * 
+	 *-----------------------------------------------------------------------*/
 	@Autowired
 	private Environment env;
 	
+	
+	
+	/*------------------------------------------------------------------------
+	 * 
+	 * 							BEANS
+	 * 
+	 *-----------------------------------------------------------------------*/
 	@Bean
 	public JavaMailSender mailSender()
 	{

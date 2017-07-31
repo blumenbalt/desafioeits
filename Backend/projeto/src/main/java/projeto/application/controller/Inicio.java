@@ -6,18 +6,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class Inicio 
 {
-	
-	//tela de login
 	@RequestMapping("/login")
-	public String index()
+	public String index() 
 	{
-		return "index";	
-	}
-	//retorna para a pagina inicial do sistema
-	@RequestMapping("/")
-	public String home()
-	{
-		return "dist/index";	
+		return "index.jsp";
 	}
 	
+	/**
+	 * 
+	 */
+	@RequestMapping("/")
+	public String home() 
+	{
+		return "dist/index.html";
+	}
+
 }

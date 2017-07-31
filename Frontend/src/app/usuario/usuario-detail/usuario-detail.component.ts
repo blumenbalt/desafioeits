@@ -10,9 +10,40 @@ import { ActivatedRoute, Router } from "@angular/router";
 })
 export class UsuarioDetailComponent   {
 
+  /*------------------------------------------------------------------------
+     *
+     * 							ATRIBUTOS
+     *
+     *-----------------------------------------------------------------------*/
+
+  /**
+   *
+   */
   usuario : Object = {};
+
+  /**
+   *
+   */
   departamentos: Object []=[];
+
+  /**
+   *
+   */
   usuarioAtual: Object;
+
+  /*------------------------------------------------------------------------
+     *
+     * 							CONSTRUCTOR
+     *
+     *-----------------------------------------------------------------------*/
+
+  /**
+   *
+   * @param departamentoService
+   * @param usuarioService
+   * @param router
+   * @param activatedRouter
+   */
   constructor(
     public departamentoService: DepartamentoService,
     public usuarioService: UsuarioService,

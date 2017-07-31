@@ -8,8 +8,28 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
+
+    /*------------------------------------------------------------------------
+     *
+     * 							ATRIBUTOS
+     *
+     *-----------------------------------------------------------------------*/
+
+  /**
+   *
+   */
   usuarioAtual: Object;
+
+  /**
+   *
+   */
   mensagem : Object = {};
+
+    /*------------------------------------------------------------------------
+     *
+     * 							CONSTRUCTOR
+     *
+     *-----------------------------------------------------------------------*/
   constructor(public usuarioService:UsuarioService, public mensagemService:MensagemService) {
 
       usuarioService.usuarioAtual().subscribe(usuario =>

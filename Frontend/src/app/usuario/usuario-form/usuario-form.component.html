@@ -21,8 +21,8 @@
     <div *ngIf="!usuario.id">
       <div layout-gt-xs="row" layout-margin>
         <md-input-container flex>
-          <input mdInput #senha flex placeholder="Senha do usuário" type="password" [(ngModel)]="usuario.senha" name="senha"
-            [required]="!usuario.id" tdAutoTrim/>
+          <input mdInput #senha flex placeholder="Senha do usuário" type="password" [(ngModel)]="usuario.senha" name="senha" [required]="!usuario.id"
+            tdAutoTrim/>
           <md-hint>
             <span [hidden]="senha.pristine || !senha.errors?.required" class="tc-red-600">Obrigatório, até 24 letras.</span>
           </md-hint>
@@ -63,14 +63,32 @@
       </md-select>
       <span flex></span>
       <span flex></span>
+      <table class="selectFile" *ngIf="usuario.id">
+        <tr layout="row">
+          <md-input-container tdFileDrop (fileDrop)="file = $event" (click)="fileInput.inputElement.click()" (keyup.enter)="fileInput.inputElement.click()"
+            class="select" flex>
+            <input mdInput placeholder="Selecione ou araste o arquivo" [value]="file ? file?.name : usuario?.filePath " [disabled]="disabled"
+              readonly/>
+          </md-input-container>
+          <button md-icon-button *ngIf="file || usuario.filePath" (click)="clearFile()" (keyup.enter)="clearFile()">
+                            <md-icon>cancel</md-icon>
+                        </button>
+          <div>
+            <td-file-input color="warn" accept=".pdf" #fileInput name="file" [(ngModel)]="file" [multiple]="false" [disabled]="disabled">
+              <md-icon>attach_file</md-icon>
+              <span>Selecionar...</span>
+            </td-file-input>
+          </div>
+        </tr>
+      </table>
     </div>
     <!--  ///////////////////////////////////////////////////////////-->
     <!--  ///////////////////////////////////////////////////////////-->
     <md-list>
-    <md-list-item *ngIf="usuario.id"(click)="fade()">
-      <md-icon mdTooltip="Alterar senha" md-list-avatar>lock</md-icon>
-      <h4 md-line>Alterar senha</h4>
-    </md-list-item>
+      <md-list-item *ngIf="usuario.id" (click)="fade()">
+        <md-icon mdTooltip="Alterar senha" md-list-avatar>lock</md-icon>
+        <h4 md-line>Alterar senha</h4>
+      </md-list-item>
     </md-list>
     <div [tdFade]="fadeDiv">
       <form #senhaForm="ngForm" class="md-padding" layout="column">
@@ -96,10 +114,9 @@
     <md-divider></md-divider>
     <div class="inset">
       <span flex> </span>
-      <button md-button color="grey" type="submit" [disabled]="myForm.form.invalid" (click)="inserirUsuario($event)" class="text-upper">Salvar</button>
+      <button md-button type="submit" [disabled]="myForm.form.invalid" (click)="saveEquipment(usuario)" class="text-upper">Salvar</button>
       <span flex> </span>
       <button md-button style="color:red" [routerLink]="['/usuarios']" class="text-upper">Cancelar</button>
-      <!--<button md-button style="color:greenyellow" (click)="fade()" class="text-upper">Alterar senha</button>-->
     </div>
 
   </form>

@@ -16,25 +16,25 @@ import { UsuarioListComponent } from './usuario/usuario-list/usuario-list.compon
 import { HomeComponent } from './home/home.component';
 
 const routes: Routes = [
-  { path: '', component: HomeComponent},
+  { path: '', component: HomeComponent },
 
 
-  { path: 'usuarios', component: UsuarioListComponent},
-  { path: 'usuarios-detalhar/:id', component: UsuarioDetailComponent},
-  { path: 'usuarios-novo', component: UsuarioFormComponent, canActivate: [AuthService]},
-  { path: 'usuarios-alterar/:id', component: UsuarioFormComponent, canActivate: [AuthService]},
+  { path: 'usuarios', component: UsuarioListComponent },
+  { path: 'usuarios-detalhar/:id', component: UsuarioDetailComponent },
+  { path: 'usuarios-novo', component: UsuarioFormComponent, canActivate: [AuthService] },
+  { path: 'usuarios-alterar/:id', component: UsuarioFormComponent, canActivate: [AuthService] },
 
-  { path: 'departamentos', component: DepartamentoListComponent},
-    { path: 'departamentos-detalhar/:id', component: DepartamentoDetailComponent },
-    { path: 'departamentos-novo', component: DepartamentoFormComponent },
-    { path: 'departamentos-alterar/:id', component: DepartamentoFormComponent },
+  { path: 'departamentos', component: DepartamentoListComponent },
+  { path: 'departamentos-detalhar/:id', component: DepartamentoDetailComponent },
+  { path: 'departamentos-novo', component: DepartamentoFormComponent },
+  { path: 'departamentos-alterar/:id', component: DepartamentoFormComponent },
 
-    { path: 'mensagens', component: MensagemComponent},
-    { path: 'acesso-negado', component: AcessoNegadoComponent}
+  { path: 'mensagens', component: MensagemComponent },
+  { path: 'acesso-negado', component: AcessoNegadoComponent }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, {useHash:true})],
+  imports: [RouterModule.forRoot(routes, { useHash: true })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

@@ -6,21 +6,57 @@ import { Http, Headers, Response } from '@angular/http';
 @Injectable()
 export class MensagemService
 {
-    headers: Headers;
-    url: String = '/projeto/mensagemdepartamento';
+  /*------------------------------------------------------------------------
+   *
+   * 							ATRIBUTOS
+   *
+   *-----------------------------------------------------------------------*/
 
-     constructor(public http: Http)
+  /**
+   *
+   */
+  headers: Headers;
+
+  /**
+   *
+   */
+  url: String = '/projeto/api/mensagemdepartamento';
+
+
+  /*------------------------------------------------------------------------
+     *
+     * 							CONSTRUCTOR
+     *
+     *-----------------------------------------------------------------------*/
+  constructor(public http: Http)
   {
     this.headers = new Headers();
     this.headers.append('Content-Type', 'application/json');
   }
 
-   listarMensagens(page: number, size: number, order: String): Observable<PageRequest>
+
+  /*------------------------------------------------------------------------
+     *
+     * 							MÉTODOS
+     *
+     *-----------------------------------------------------------------------*/
+
+
+  /**
+   *                 LISTA TODAS AS MENSAGENS ENVIADA AO DEPARTAMENTO
+   * @param page
+   * @param size
+   * @param order
+   */
+  listarMensagens(page: number, size: number, order: String): Observable<PageRequest>
   {
-    return this.http.get(this.url + '/' +  page + '/' + size + '/' + order).map(res => res.json());
+    return this.http.get(this.url + '/' + page + '/' + size + '/' + order).map(res => res.json());
   }
 
-  listarMensagem():Observable<Response>
+  /**
+   * MOSTRA ULTIMA MENSAGEM ENVIADA AO DEPARTAMENTO DO USUÁRIO
+   */
+  listarMensagem(): Observable<Response>
   {
     return this.http.get(this.url + '/home').map(res => res.json());
   }
@@ -31,12 +67,16 @@ export class MensagemService
    */
   deleteDepartamento(id): Observable<Response>
   {
-     return this.http.delete(this.url + '/' + id);
+    return this.http.delete(this.url + '/' + id);
   }
 
+  /**
+   *             ENVIA UMA MENSAGEM PARA OS USUÁRIOS DO DEPARTAMENTO
+   * @param mensagem
+   */
   novaMensagem(mensagem): Observable<Response>
   {
-    return this.http.post(this.url + '', JSON.stringify(mensagem), {headers:this.headers});
+    return this.http.post(this.url + '', JSON.stringify(mensagem), { headers: this.headers });
   }
 
 }

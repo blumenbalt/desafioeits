@@ -8,5 +8,6 @@ export class Usuario
     perfil: String;
     departamento: Object[];
     papel: String;
+    filePath: String ;
 
 }

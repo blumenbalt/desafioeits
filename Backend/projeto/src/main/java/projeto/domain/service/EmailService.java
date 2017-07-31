@@ -10,29 +10,48 @@ import org.springframework.stereotype.Component;
 import projeto.domain.entity.Usuario;
 
 @Component
-@PropertySource({"classpath:env/mail.properties"})
+@PropertySource({ "classpath:env/mail.properties" })
 public class EmailService 
 {
+	/*------------------------------------------------------------------------
+	 * 
+	 * 							ATRIBUTOS
+	 * 
+	 *-----------------------------------------------------------------------*/
 	
+	/**
+	 * 
+	 */
 	@Autowired
 	private JavaMailSender mailSender;
 	
+	/**
+	 * 
+	 */
 	@Autowired
 	private Environment env;
+
+	/*------------------------------------------------------------------------
+	 * 
+	 * 							SERVIÇOS
+	 * 
+	 *-----------------------------------------------------------------------*/
 	
-	public void send(Usuario usuario)
+	/**
+	 * 
+	 * @param usuario
+	 */
+	public void send(Usuario usuario) 
 	{
 		SimpleMailMessage mensagem = new SimpleMailMessage();
 		mensagem.setFrom(env.getProperty("Email"));
 		mensagem.setTo(usuario.getEmail());
 		mensagem.setSubject("Cadastro realizado com sucesso!!");
-		String email =
-				  "Usuario: " + usuario.getEmail() + "\n" + 
-				  "Senha: " + usuario.getPassword() + "\n";
+		String email = "Usuario: " + usuario.getEmail() + "\n" + "Senha: " + usuario.getPassword() + "\n";
 		mensagem.setText(email);
-		
+
 		mailSender.send(mensagem);
-		
+
 	}
 
 }

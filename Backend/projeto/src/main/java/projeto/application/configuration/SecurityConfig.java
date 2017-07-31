@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -15,45 +16,57 @@ import projeto.domain.service.AppUserDetailsService;
 
 @EnableWebSecurity
 @ComponentScan("projeto.domain.service")
-@EnableGlobalMethodSecurity(prePostEnabled=true)
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
-	
-	
+@EnableGlobalMethodSecurity(prePostEnabled = true)
+public class SecurityConfig extends WebSecurityConfigurerAdapter 
+{
+
+	/*------------------------------------------------------------------------
+	 * 
+	 * 							ATRIBUTOS
+	 * 	
+	 *-----------------------------------------------------------------------*/
 	@Autowired
 	private AppUserDetailsService userDetailsService;
 
+	/*------------------------------------------------------------------------
+	 * 
+	 * 							BEANS
+	 * 
+	 *-----------------------------------------------------------------------*/
 	@Bean
-	public PasswordEncoder passwordEncoder() {
+	public PasswordEncoder passwordEncoder() 
+	{
 		return new BCryptPasswordEncoder();
 	}
 
+	/*------------------------------------------------------------------------
+	 * 
+	 * 							OVERRIDES
+	 * 
+	 *-----------------------------------------------------------------------*/
 	@Override
-	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+	protected void configure(AuthenticationManagerBuilder auth) throws Exception 
+	{
 		auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
 	}
-
+	
+	/**
+	 * 
+	 */
 	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		http.csrf().disable()
-		.authorizeRequests()
-			.antMatchers("/**").permitAll();
+	protected void configure(HttpSecurity http) throws Exception 
+	{	
+		http.csrf().disable().sessionManagement()
+        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+        .maximumSessions(1).expiredUrl("/login");
 		
-	/*	http
-		.authorizeRequests()
-		.antMatchers( "/**" )
-		.authenticated()
-		.and()
-		.httpBasic()
-		.and()
-		.csrf()
-		.disable();*/
-		
-//		http.csrf().disable().sessionManagement().maximumSessions(1).expiredUrl("/login");
-//		http.headers().frameOptions().disable();
+		http.headers().frameOptions().disable();
 
-        /*http
+		http
 		.authorizeRequests()
-		.anyRequest()
+		.antMatchers( "/projeto/**" )
+		.hasIpAddress( "127.0.0.1" )
+    	.anyRequest()
 		.authenticated()
 		.and()
 		.formLogin()
@@ -64,7 +77,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		.permitAll()
 		.and()
 		.logout()
-	    .logoutUrl( "/logout" );*/
+		.logoutUrl( "/logout" ).and();
+		
+		 http
+         .authorizeRequests()
+         .antMatchers( "/api/**" )
+             .authenticated()
+             .and()
+                 .httpBasic();
+		
 	}
 
 }

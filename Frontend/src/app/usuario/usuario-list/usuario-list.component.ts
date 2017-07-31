@@ -11,95 +11,170 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 
 
-export class UsuarioListComponent implements OnInit {
-  ngOnInit() {
+export class UsuarioListComponent implements OnInit
+{
+  ngOnInit()
+  {
 
   }
 
-  //           CONSTRUCTOR E INJECTS
+
+  /*------------------------------------------------------------------------
+     *
+     * 							ATRIBUTOS
+     *
+     *-----------------------------------------------------------------------*/
+
+  /**
+   *
+   */
   usuarioAtual: Object;
-  usuarios: PageRequest  = new PageRequest();
+
+  /**
+   *
+   */
+  usuarios: PageRequest = new PageRequest();
+
+  /**
+   *
+   */
   total: Number;
+
+  /**
+   *
+   */
   page: number = 1;
+
+  /**
+   *
+   */
   size: number = 5;
-  order: String ="ASC";
-  property: String="nome";
-  sortBy : String ="";
-  filter : String = "";
-   columns: ITdDataTableColumn[] = [
-    { name: 'nome', label: 'Nome do usuário', sortable: true},
-    { name: 'ativo', label:'Status', tooltip:'é possível alterar'},
-    { name: 'opcao', label:'Opções', tooltip:'detalhar e editar'},
+
+  /**
+   *
+   */
+  order: String = "ASC";
+
+  /**
+   *
+   */
+  property: String = "nome";
+
+  /**
+   *
+   */
+  sortBy: String = "";
+
+  /**
+   *
+   */
+  filter: String = "";
+
+  /**
+   *
+   */
+  columns: ITdDataTableColumn[] = [
+    { name: 'nome', label: 'Nome do usuário', sortable: true },
+    { name: 'ativo', label: 'Status', tooltip: 'é possível alterar' },
+    { name: 'opcao', label: 'Opções', tooltip: 'detalhar e editar' },
   ];
 
+
+    /*------------------------------------------------------------------------
+     *
+     * 							CONSTRUCTOR
+     *
+     *-----------------------------------------------------------------------*/
+
+    /**
+     *
+     * @param usuarioService
+     * @param snackBar
+     * @param router
+     * @param route
+     */
   constructor(public usuarioService: UsuarioService,
-   public snackBar: MdSnackBar, private router: Router,private route: ActivatedRoute
-   )
-   { //        USUARIO ATUAL LOGADO
-     usuarioService.usuarioAtual().subscribe(usuario =>
-      {
-        this.usuarioAtual = usuario;
-      },
+    public snackBar: MdSnackBar, private router: Router, private route: ActivatedRoute
+  )
+  { //        USUARIO ATUAL LOGADO
+    usuarioService.usuarioAtual().subscribe(usuario =>
+    {
+      this.usuarioAtual = usuario;
+    },
       erro => console.log(erro));
 
-     //           LISTAGEM DE USUARIOS
-        this.usuarioService.listarUsuario(this.page -1, this.size).subscribe(usuarios=>{
-        this.usuarios=usuarios;
-        this.total = usuarios.totalElements;
-      })
-    }
-//             MÉTODOS
-//
-/**
- *
- */
-
-
     //           LISTAGEM DE USUARIOS
+    this.usuarioService.listarUsuario(this.page - 1, this.size).subscribe(usuarios =>
+    {
+      this.usuarios = usuarios;
+      this.total = usuarios.totalElements;
+    })
+  }
+  /*------------------------------------------------------------------------
+     *
+     * 							MÉTODOS
+     *
+     *-----------------------------------------------------------------------*/
 
- listarUsuarios(textSearch : String)
+  //           LISTAGEM DE USUARIOS
+  /**
+   *
+   * @param textSearch
+   */
+  listarUsuarios(textSearch: String)
   {
     this.filter = textSearch;
     if ((textSearch == '') || (textSearch == undefined))
     {
-      this.usuarioService.listarUsuario(this.page -1, this.size).subscribe(res =>
+      this.usuarioService.listarUsuario(this.page - 1, this.size).subscribe(res =>
       {
         this.usuarios = res;
         this.total = this.usuarios.totalElements;
       }, erro =>
-        console.log(erro))
+          console.log(erro))
     }
     else
     {
-      this.usuarioService.listarUsuarioPorNome(0 , this.size , this.property ,this.order, this.filter).subscribe(res =>
+      this.usuarioService.listarUsuarioPorNome(0, this.size, this.property, this.order, this.filter).subscribe(res =>
       {
         this.total = this.usuarios.totalElements;
         this.usuarios = res;
       }, erro =>
-        console.log(erro))
+          console.log(erro))
     }
   }
 
-    change(event: IPageChangeEvent): void
+  /**
+   *
+   */
+  downloadFile(usuario)
   {
-       this.page = event.page.valueOf();
-       this.size = event.pageSize.valueOf();
-       this.usuarioService.listarUsuario(this.page -1, this.size).subscribe(usuarios=>{
-        this.usuarios=usuarios;
-        this.total = usuarios.totalElements;
-      })
-       this.router.navigate(['/usuarios'],
-       {queryParams: {'page': this.page}});
+    window.location.assign("/projeto/usuario/downloadFile/" + usuario.id);
+  }
+  change(event: IPageChangeEvent): void
+  {
+    this.page = event.page.valueOf();
+    this.size = event.pageSize.valueOf();
+    this.usuarioService.listarUsuario(this.page - 1, this.size).subscribe(usuarios =>
+    {
+      this.usuarios = usuarios;
+      this.total = usuarios.totalElements;
+    })
+    this.router.navigate(['/usuarios'],
+      { queryParams: { 'page': this.page } });
 
   }
 
+  /**
+   *
+   */
   sortEvent(sortEvent: ITdDataTableSortChangeEvent): void
   {
     this.sortBy = sortEvent.name;
     this.order = sortEvent.order === TdDataTableSortingOrder.Ascending ? 'DESC' : 'ASC';
-    this.property= sortEvent.name;
-    this.filter="null";
-    this.usuarioService.listarUsuarioPorNome(this.page -1 , this.size , this.property ,this.order, this.filter ).subscribe(usuarios=>
+    this.property = sortEvent.name;
+    this.filter = "null";
+    this.usuarioService.listarUsuarioPorNome(this.page - 1, this.size, this.property, this.order, this.filter).subscribe(usuarios =>
     {
       this.usuarios = usuarios;
       this.total = usuarios.totalElements;
@@ -108,16 +183,16 @@ export class UsuarioListComponent implements OnInit {
   }
 
 
-    /**
-     *                 SNACKBAR
-     */
-          openSnackBar(msg, action)
+  /**
+   *                 SNACKBAR
+   */
+  openSnackBar(msg, action)
+  {
+    this.snackBar.open(msg, action,
       {
-        this.snackBar.open(msg, action,
-        {
-          duration: 10000
-        });
-      }
+        duration: 10000
+      });
+  }
 
 
   /**
@@ -125,43 +200,45 @@ export class UsuarioListComponent implements OnInit {
    */
   ativar(event, usuario): void
   {
-      this.usuarioService.ativarUsuario(usuario).subscribe(() =>
+    this.usuarioService.ativarUsuario(usuario).subscribe(() =>
+    {
+      this.openSnackBar('Usuário ativado', 'Sucesso');
+      this.usuarioService.listarUsuario(this.page - 1, this.size).subscribe(usuarios =>
       {
-        this.openSnackBar('Usuário ativado', 'Sucesso');
-       this.usuarioService.listarUsuario(this.page -1, this.size).subscribe(usuarios=>{
-        this.usuarios=usuarios;
+        this.usuarios = usuarios;
         this.total = usuarios.totalElements;
       })
-      },
+    },
 
-        erro =>
-        {
-          this.openSnackBar('Não foi possível ativar o usuário', 'Erro');
-         console.log(erro);
-        }
-         );
-   }
+      erro =>
+      {
+        this.openSnackBar('Não foi possível ativar o usuário', 'Erro');
+        console.log(erro);
+      }
+    );
+  }
 
   /**
    *          DESATIVAR USUÁRIO
    */
   desativar(event, usuario): void
   {
-      this.usuarioService.desativarUsuario(usuario).subscribe(() =>
+    this.usuarioService.desativarUsuario(usuario).subscribe(() =>
+    {
+      this.openSnackBar('Usuário desativado', 'Sucesso');
+      this.usuarioService.listarUsuario(this.page - 1, this.size).subscribe(usuarios =>
       {
-        this.openSnackBar('Usuário desativado', 'Sucesso');
-         this.usuarioService.listarUsuario(this.page -1, this.size).subscribe(usuarios=>{
-        this.usuarios=usuarios;
+        this.usuarios = usuarios;
         this.total = usuarios.totalElements;
       })
-      },
+    },
 
-        erro =>
-        {
-          this.openSnackBar(erro._body, 'Erro');
-         console.log(erro);
-        }
-        );
-    }
+      erro =>
+      {
+        this.openSnackBar(erro._body, 'Erro');
+        console.log(erro);
+      }
+    );
+  }
 
 }

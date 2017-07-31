@@ -1,26 +1,64 @@
 package projeto.application.configuration;
 
+import javax.servlet.MultipartConfigElement;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRegistration.Dynamic;
+
+import org.springframework.web.context.request.RequestContextListener;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
-public class AppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer
+public class AppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer 
 {
 
+	/*------------------------------------------------------------------------
+	 * 
+	 * 							OVERRIDES
+	 * 
+	 *-----------------------------------------------------------------------*/
 	@Override
-	protected Class<?>[] getRootConfigClasses()
+	protected Class<?>[] getRootConfigClasses() 
 	{
-		return new Class<?>[]{JPAConfig.class,WebConfig.class,  ServiceConfig.class, SecurityConfig.class, MailConfig.class};
+		return new Class<?>[] { JPAConfig.class, WebConfig.class, ServiceConfig.class, SecurityConfig.class,
+				MailConfig.class };
 	}
-
+	
+	/**
+	 * 
+	 */
 	@Override
 	protected Class<?>[] getServletConfigClasses() 
 	{
 		return new Class<?>[] {};
 	}
-
+	
+	/**
+	 * 
+	 */
 	@Override
-	protected String[] getServletMappings()
+	protected String[] getServletMappings() 
 	{
-		return new String[]{"/"};
+		return new String[] { "/" };
+	}
+	
+	/**
+	 * 
+	 */
+	@Override
+	protected void customizeRegistration(Dynamic registration) 
+	{
+		registration.setMultipartConfig(new MultipartConfigElement(""));
+	}
+	
+	/**
+	 * 
+	 */
+	@Override
+	public void onStartup(ServletContext servletContext) throws ServletException 
+	{
+		super.onStartup(servletContext);
+		servletContext.addListener(RequestContextListener.class);
+		servletContext.setInitParameter("spring.profiles.active", "dev");
 	}
 
 }

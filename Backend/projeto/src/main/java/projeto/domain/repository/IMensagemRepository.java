@@ -6,8 +6,6 @@ import org.springframework.stereotype.Repository;
 import projeto.domain.entity.Mensagem;
 
 @Repository
-public interface IMensagemRepository extends JpaRepository<Mensagem, Long>{
-
-	
-	
+public interface IMensagemRepository extends JpaRepository<Mensagem, Long>
+{	
 }

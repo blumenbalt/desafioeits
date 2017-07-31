@@ -11,40 +11,121 @@ import { PageRequest } from "app/PageRequest";
   templateUrl: './departamento-detail.component.html',
   styleUrls: ['./departamento-detail.component.css']
 })
-export class DepartamentoDetailComponent implements OnInit{
+export class DepartamentoDetailComponent implements OnInit {
   ngOnInit(): void {
-    this.activatedRouter.queryParams.subscribe(
-      (queryParams: any) =>
-      {
-        this.page = queryParams['page'] ;
-      }
-    )
+
   }
+
+  /*------------------------------------------------------------------------
+	 *
+	 * 							ATRIBUTOS
+	 *
+	 *-----------------------------------------------------------------------*/
+
+  /**
+   *
+   */
   usuarios: PageRequest = new PageRequest();
+
+  /**
+   *
+   */
   usuarioAtual: Object;
+
+  /**
+   *
+   */
   departamento: Object = {};
- // usuarios: Object[] = [];
+
+  /**
+   *
+   */
   fadeDiv: boolean = true;
+
+  /**
+   *
+   */
   fadeDivi: boolean = true;
+
+  /**
+   *
+   */
   departamentoId: number;
+
+  /**
+   *
+   */
   selectedValue: string;
+
+  /**
+   *
+   */
   page: number = 1;
+
+  /**
+   *
+   */
   size: number = 5;
-  order: String ="ASC";
-  property: String="nome";
+
+  /**
+   *
+   */
+  order: String = "ASC";
+
+  /**
+   *
+   */
+  property: String = "nome";
+
+  /**
+   *
+   */
   total: Number;
-  sortBy : String ="";
-  filter : String = "";
-  opcoes = [
+
+  /**
+   *
+   */
+  sortBy: String = "";
+
+  /**
+   *
+   */
+  filter: String = "";
+
+  /**
+   *
+   */
+  opcoes =
+  [
     { value: 'todos', viewValue: 'Todos' },
     { value: 'departamento', viewValue: 'Usuário do departamento' },
     { value: 'vincular', viewValue: 'Usuário para vincular' }
   ];
+
+  /**
+   *
+   */
   papeis =
   [
     { value: 'SUPERIOR', viewValue: 'Superior' },
     { value: 'COMUM', viewValue: 'Comum' }
   ];
+
+/**
+ *
+ * @param usuarioService
+ * @param departamentoService
+ * @param router
+ * @param activatedRouter
+ * @param _dialogService
+ * @param _viewContainerRef
+ * @param snackBar
+ */
+  /*------------------------------------------------------------------------
+	 *
+	 * 							CONSTRUCTOR
+	 *
+	 *-----------------------------------------------------------------------*/
   constructor(
     public usuarioService: UsuarioService,
     public departamentoService: DepartamentoService,
@@ -61,11 +142,12 @@ export class DepartamentoDetailComponent implements OnInit{
       this.departamentoId = id;
       this.departamentoService.detalharDepartamento(id).subscribe(departamento => this.departamento = departamento, erro => console.log(erro));
     });
-       this.usuarioService.listarAtivos(this.page -1, this.size).subscribe(res =>
-      {
-        this.usuarios = res;
-        this.total = this.usuarios.totalElements;
-      }, erro =>
+
+    this.usuarioService.listarAtivos(this.page - 1, this.size).subscribe(res =>
+    {
+      this.usuarios = res;
+      this.total = this.usuarios.totalElements;
+    }, erro =>
         console.log(erro))
 
     usuarioService.usuarioAtual().subscribe(usuario =>
@@ -76,44 +158,66 @@ export class DepartamentoDetailComponent implements OnInit{
 
 
   }
-     filtrarTodos(textSearch : String)
+
+  /*------------------------------------------------------------------------
+	 *
+	 * 							MÉTODOS
+	 *
+	 *-----------------------------------------------------------------------*/
+
+
+  /**
+   *     LISTAR TODOS OS ATIVOS SEM OU COM FILTRO
+   * @param textSearch
+   */
+  filtrarTodos(textSearch: String)
   {
     this.filter = textSearch;
     if ((textSearch == '') || (textSearch == undefined))
     {
-      this.usuarioService.listarAtivos(this.page -1, this.size).subscribe(res =>
+      this.usuarioService.listarAtivos(this.page - 1, this.size).subscribe(res =>
       {
         this.usuarios = res;
         this.total = this.usuarios.totalElements;
       }, erro =>
-        console.log(erro))
+          console.log(erro))
     }
     else
     {
-      this.usuarioService.listarUsuarioPorNome(0 , this.size , this.property ,this.order, this.filter).subscribe(res =>
+      this.usuarioService.listarUsuarioPorNome(0, this.size, this.property, this.order, this.filter).subscribe(res =>
       {
         this.total = this.usuarios.totalElements;
         this.usuarios = res;
       }, erro =>
-        console.log(erro))
+          console.log(erro))
     }
   }
 
 
+  /**
+   *  TROCAR DE PÁGINA
+   * @param event
+   */
   change(event: IPageChangeEvent): void
   {
-       this.page = event.page.valueOf();
-       this.size = event.pageSize.valueOf();
-       this.usuarioService.listarAtivos(this.page -1, this.size).subscribe(res =>
-      {
-        this.usuarios = res;
-        this.total = this.usuarios.totalElements;
-      }, erro =>
+    this.page = event.page.valueOf();
+    this.size = event.pageSize.valueOf();
+    this.usuarioService.listarAtivos(this.page - 1, this.size).subscribe(res =>
+    {
+      this.usuarios = res;
+      this.total = this.usuarios.totalElements;
+    }, erro =>
         console.log(erro))
-       this.router.navigate(['/departamentos-detalhar/' + this.departamentoId],
-       {queryParams: {'page': this.page}});
+    this.router.navigate(['/departamentos-detalhar/' + this.departamentoId],
+      { queryParams: { 'page': this.page } });
 
   }
+
+  /**
+   *
+   * @param msg
+   * @param action
+   */
   openSnackBar(msg, action)
   {
     this.snackBar.open(msg, action,
@@ -122,107 +226,132 @@ export class DepartamentoDetailComponent implements OnInit{
       });
   }
 
+  /**
+   *   VINCULA USUÁRIO NO DEPARTAMENTO
+   * @param event
+   * @param usuario
+   */
   vincular(event, usuario): void
   {
-      this.usuarioService.vincularUsuario(usuario, this.departamentoId).subscribe(() =>
-      {
-        this.openSnackBar('Usuário vinculado', 'Sucesso');
-        this.usuarioService.listarAtivos(this.page -1, this.size).subscribe(res =>
+    this.usuarioService.vincularUsuario(usuario, this.departamentoId).subscribe(() =>
+    {
+      this.openSnackBar('Usuário vinculado', 'Sucesso');
+
+      this.usuarioService.listarAtivos(this.page - 1, this.size).subscribe(res =>
       {
         this.usuarios = res;
         this.total = this.usuarios.totalElements;
-      }, erro =>
-        console.log(erro))
-      },
+      })
 
-        erro =>
-        {
-          this.openSnackBar('Não foi possível vinculado o usuário', 'Erro');
-         console.log(erro);
-        }
-         );
-   }
+    },
 
+      erro =>
+      {
+        this.openSnackBar('Não foi possível vinculado o usuário', 'Erro');
+        console.log(erro);
+      }
+    );
+  }
+
+  /**
+   *     DESVINCULAR USUÁRIO DO DEPARTAMENTO
+   * @param event
+   * @param usuario
+   */
   desvincular(event, usuario): void
   {
-      this.usuarioService.desvincularUsuario(usuario).subscribe(() =>
-      {
-        this.openSnackBar('Usuário desvinculado', 'Sucesso');
-        this.usuarioService.listarAtivos(this.page -1, this.size).subscribe(res =>
-      {
-        this.usuarios = res;
-        this.total = this.usuarios.totalElements;
-      }, erro =>
-        console.log(erro))
-      },
-
-        erro =>
-        {
-          this.openSnackBar('Não foi possível desvinculado o usuário', 'Erro');
-         console.log(erro);
-        }
-         );
-   }
-
-    promoverUsuario(id,papel)
+    this.usuarioService.desvincularUsuario(usuario).subscribe(() =>
     {
-        this.usuarioService.promoverUsuario(id,papel).subscribe(res =>{
-          erro => console.log(erro);
-        this.usuarioService.listarAtivos(this.page -1, this.size).subscribe(res =>
+      this.openSnackBar('Usuário desvinculado', 'Sucesso');
+      this.usuarioService.listarAtivos(this.page - 1, this.size).subscribe(res =>
       {
         this.usuarios = res;
         this.total = this.usuarios.totalElements;
       }, erro =>
-        console.log(erro))
-        });
-        this.openSnackBar('Papel usuário alterado', '');
-    }
+          console.log(erro))
+    },
+
+      erro =>
+      {
+        this.openSnackBar('Não foi possível desvinculado o usuário', 'Erro');
+        console.log(erro);
+      }
+    );
+  }
 
 
+  /**
+   *   PROMOVE O USUÁRIO NO DEPARTAMENTO
+   * @param id
+   * @param papel
+   */
+  promoverUsuario(id, papel)
+  {
+    this.usuarioService.promoverUsuario(id, papel).subscribe(res =>
+    {
+      erro => console.log(erro);
+      this.usuarioService.listarAtivos(this.page - 1, this.size).subscribe(res =>
+      {
+        this.usuarios = res;
+        this.total = this.usuarios.totalElements;
+      }, erro =>
+          console.log(erro))
+    });
+    this.openSnackBar('Papel usuário alterado', '');
+  }
 
-   filtrarNoDepartamento(textSearch : String)
+
+  /**
+   *   FILTRA USUÁRIOS DO DEPARTAMENTO
+   * @param textSearch
+   */
+  filtrarNoDepartamento(textSearch: String)
   {
     this.filter = textSearch;
     if ((textSearch == '') || (textSearch == undefined))
     {
-      this.usuarioService.listarAtivos(this.page -1, this.size).subscribe(res =>
+      this.usuarioService.listarAtivos(this.page - 1, this.size).subscribe(res =>
       {
         this.usuarios = res;
         this.total = this.usuarios.totalElements;
       }, erro =>
-        console.log(erro))
+          console.log(erro))
     }
     else
     {
-      this.usuarioService.listarPorDepartamentoPorNome(this.departamentoId, 0   , this.size , this.property ,this.order, this.filter).subscribe(res =>
+      this.usuarioService.listarPorDepartamentoPorNome(this.departamentoId, 0, this.size, this.property, this.order, this.filter).subscribe(res =>
       {
         this.total = this.usuarios.totalElements;
         this.usuarios = res;
       }, erro =>
-        console.log(erro))
+          console.log(erro))
     }
   }
 
-   filtrarParaVincular(textSearch : String)
+  /**
+   *      FILTRA USUÁRIOS PARA VINCULAR
+   * @param textSearch
+   */
+  filtrarParaVincular(textSearch: String)
   {
     this.filter = textSearch;
     if ((textSearch == '') || (textSearch == undefined))
     {
-      this.usuarioService.listarAtivos(this.page -1, this.size).subscribe(res =>
+      this.usuarioService.listarAtivos(this.page - 1, this.size).subscribe(res =>
       {
         this.usuarios = res;
         this.total = this.usuarios.totalElements;
       }, erro =>
-        console.log(erro))
+          console.log(erro))
     }
     else
     {
-      this.usuarioService.listarParaVincularPorNome( 0  , this.size , this.property ,this.order, this.filter).subscribe(res =>
+      this.usuarioService.listarParaVincularPorNome(0, this.size, this.property, this.order, this.filter).subscribe(res =>
       {
         this.total = this.usuarios.totalElements;
         this.usuarios = res;
       }, erro =>
-        console.log(erro))
+          console.log(erro))
     }
   }
 

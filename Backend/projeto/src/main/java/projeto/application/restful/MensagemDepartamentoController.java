@@ -20,65 +20,79 @@ import projeto.domain.entity.MensagemDepartamento;
 import projeto.domain.service.DepartamentoService;
 
 @RestController
-@RequestMapping("mensagemdepartamento")
+@RequestMapping("api/mensagemdepartamento")
 public class MensagemDepartamentoController 
 {
-	// importa serviços do departamento
+	/*------------------------------------------------------------------------
+	 * 
+	 * 							ATRIBUTOS
+	 * 
+	 *-----------------------------------------------------------------------*/
 	@Autowired
 	private DepartamentoService departamentoService;
+
+	/*------------------------------------------------------------------------
+	 * 
+	 * 							SERVIÇOS
+	 * 
+	 *-----------------------------------------------------------------------*/
+
+	/**
+	 * 
+	 * @param mensagemDepartamento
+	 */
+	@Produces({ "application/xml", "application/json" })
+	@Consumes({ "application/xml", "application/json" })
+	@PostMapping
+	@CrossOrigin
+	public void inserir(@RequestBody MensagemDepartamento mensagemDepartamento) 
+	{
+		this.departamentoService.insertMessageDepartament(mensagemDepartamento);
+	}
 	
-	 	/**
-	 	 * 
-	 	 * 
-	 	 * Insere uma mensagem num departamento
-	 	 */
-		@Produces({"application/xml", "application/json"})
-		@Consumes({"application/xml", "application/json"})
-		@PostMapping
-		@CrossOrigin
-		public void inserir (@RequestBody MensagemDepartamento mensagemDepartamento)
-		{
-			this.departamentoService.insertMessageDepartament(mensagemDepartamento);
-		}
-		
-		/**
-		 * Lista todas as mensagens por usuário
-		 */
-		@GetMapping(value="/{page}/{size}/{order}")
-		@ResponseBody
-		@Produces({"application/xml", "application/json"})
-		@CrossOrigin
-		public Page<MensagemDepartamento> listaMensagemPorUsuario(@PathVariable int page, @PathVariable int size, @PathVariable String order)
-		{
-			String property = "id";
-			return departamentoService.listAllByUserId(page, size, property, order);
-		}
-		
-		/**
-		 * 
-		 * Deleta a mensagem
-		 */
-		@Consumes({"application/xml", "application/json"})
-		@Produces({"application/xml", "application/json"})
-		@RequestMapping(value="/{id}", method= RequestMethod.DELETE)
-		@CrossOrigin
-		public ResponseEntity<String> deletar(@PathVariable Long id)
-		{
-			return this.departamentoService.deleteMessageDepartament(id);
-		}
-		
-		/**
-		 * Mostra a ultima mensagem enviada
-		 */
-		@Consumes({"application/xml", "application/json"})
-		@Produces({"application/xml", "application/json"})
-		@GetMapping(value="/home")
-		@CrossOrigin
-		public MensagemDepartamento mostrarMensagem()
-		{
-			return this.departamentoService.showMessage();
-		}
-		
-		
+	/**
+	 * Lista todas as mensagens do departamento do usuário
+	 * @param page
+	 * @param size
+	 * @param order
+	 * @return
+	 */
+	@GetMapping(value = "/{page}/{size}/{order}")
+	@ResponseBody
+	@Produces({ "application/xml", "application/json" })
+	@CrossOrigin
+	public Page<MensagemDepartamento> listaMensagemPorUsuario(@PathVariable int page, @PathVariable int size,
+			@PathVariable String order) 
+	{
+		String property = "id";
+		return departamentoService.listAllByUserId(page, size, property, order);
+	}
 	
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 */
+	@Consumes({ "application/xml", "application/json" })
+	@Produces({ "application/xml", "application/json" })
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+	@CrossOrigin
+	public ResponseEntity<String> deletar(@PathVariable Long id) 
+	{
+		return this.departamentoService.deleteMessageDepartament(id);
+	}
+	
+	/**
+	 * Retorna a última mensagem enviada ao departamento do usuário
+	 * @return
+	 */
+	@Consumes({ "application/xml", "application/json" })
+	@Produces({ "application/xml", "application/json" })
+	@GetMapping(value = "/home")
+	@CrossOrigin
+	public MensagemDepartamento mostrarMensagem() 
+	{
+		return this.departamentoService.showMessage();
+	}
+
 }

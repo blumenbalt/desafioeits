@@ -16,70 +16,107 @@ import org.hibernate.validator.constraints.NotBlank;
 @Audited
 @Entity
 @Table(name = "mensagem")
-public class Mensagem {
+public class Mensagem 
+{
+
+	/*------------------------------------------------------------------------
+	 * 
+	 * 							ATRIBUTOS
+	 * 
+	 *-----------------------------------------------------------------------*/
 	
 	/**
-	 *
-	 * ATRIBUTOS
 	 * 
 	 */
-	/**
-	 * 
-	 * id da mensagem
-	 * 
-	 */
-	
-	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	/**
-	 * texto da mensagem
+	 * 
 	 */
 	@NotBlank
 	@Size(min = 1, max = 144)
 	@Column(nullable = false)
 	private String texto;
-	
+
 	/**
-	 * dia em que a mensagem foi publicada
+	 * 
 	 */
 	private LocalDate data;
+
+	/*------------------------------------------------------------------------
+	 * 
+	 * 							GETTES E SETTERS
+	 * 
+	 *-----------------------------------------------------------------------*/
 	
 	/**
 	 * 
-	 * GETTERS E SETTERS
+	 * @return
 	 */
-	public Long getId() {
+	public Long getId() 
+	{
 		return id;
 	}
 
-
-	public void setId(Long id) {
+	/**
+	 * 
+	 * @param id
+	 */
+	public void setId(Long id) 
+	{
 		this.id = id;
 	}
 
-	public String getTexto() {
+	/**
+	 * 
+	 * @return
+	 */
+	public String getTexto() 
+	{
 		return texto;
 	}
 
-	public void setTexto(String texto) {
+	/**
+	 * 
+	 * @param texto
+	 */
+	public void setTexto(String texto) 
+	{
 		this.texto = texto;
 	}
 
-	public LocalDate getData() {
+	/**
+	 * 
+	 * @return
+	 */
+	public LocalDate getData() 
+	{
 		return data;
 	}
-	
-	
-	public void setData(LocalDate data) {
+
+	/**
+	 * 
+	 * @param data
+	 */
+	public void setData(LocalDate data) 
+	{
 		this.data = data;
 	}
-	
+
+	/*------------------------------------------------------------------------
+	 * 
+	 * 							HASH E EQUALS
+	 * 
+	 *-----------------------------------------------------------------------*/
+
 	/**
-	 *  HASH E EQUALS
+	 * 
 	 */
 	@Override
-	public int hashCode() {
+	public int hashCode()
+	{
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((data == null) ? 0 : data.hashCode());
@@ -87,9 +124,13 @@ public class Mensagem {
 		result = prime * result + ((texto == null) ? 0 : texto.hashCode());
 		return result;
 	}
-	
+
+	/**
+	 * 
+	 */
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(Object obj) 
+	{
 		if (this == obj)
 			return true;
 		if (obj == null)

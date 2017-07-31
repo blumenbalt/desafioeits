@@ -29,34 +29,33 @@
     </div>
 
     <div *ngIf="usuarioAtual?.perfil == 'ROLE_ADMINISTRADOR'">
-    <md-list *ngIf="!departamento.departamento">
-      <md-list-item *ngIf="departamento.id">
-        <button mdTooltip="Listar"  (click)="dialogDepartamentos()"
-        md-icon-button md-list-avatar>
+      <md-list *ngIf="!departamento.departamento">
+        <md-list-item *ngIf="departamento.id">
+          <button mdTooltip="Listar" (click)="dialogDepartamentos()" md-icon-button md-list-avatar>
         <md-icon md-list-avatar >list</md-icon>
         </button>
-      <h3 md-line>Listar departamentos para vincular </h3>
-      </md-list-item>
+          <h3 md-line>Listar departamentos para vincular </h3>
+        </md-list-item>
 
-    </md-list>
-     <md-list *ngIf="departamento.departamento">
+      </md-list>
+      <md-list *ngIf="departamento.departamento">
         <md-list-item>
           <h4 md-line>{{departamento.departamento.nome}}</h4>
           <p md-line> Departamento vinculado </p>
-          <md-icon md-list-avatar (click)="desvincularDepartamento($event)"  md-Tooltip="Desvincular">clear</md-icon>
+          <md-icon md-list-avatar (click)="desvincularDepartamento($event)" md-Tooltip="Desvincular">clear</md-icon>
         </md-list-item>
-    </md-list>
+      </md-list>
     </div>
     <div layout-gt-xs="row" layout-margin>
-    <!--  ///////////////////////////////////////////////////////////-->
-    <!--  ///////////////////////////////////////////////////////////-->
+      <!--  ///////////////////////////////////////////////////////////-->
+      <!--  ///////////////////////////////////////////////////////////-->
     </div>
     <md-divider></md-divider>
     <div class="inset">
       <span flex> </span>
-      <button md-button  type="submit" [disabled]="!myForm.valid" (click)="inserirdepartamento($event)" class="text-upper">Salvar</button>
+      <button md-button type="submit" [disabled]="!myForm.valid" (click)="inserirdepartamento($event)" class="text-upper">Salvar</button>
       <span flex> </span>
-      <button md-button  [routerLink]="['/departamentos']" class="text-upper">Voltar</button>
+      <button md-button [routerLink]="['/departamentos']" class="text-upper">Voltar</button>
     </div>
     <!--///////////////////////////////////////////////////////////-->
     <!--///////////////////////////////////////////////////////////-->

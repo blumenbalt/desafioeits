@@ -10,106 +10,167 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.envers.Audited;
+import org.hibernate.validator.constraints.NotBlank;
 
 @Audited
 @Entity
 @Table
-public class Departamento
+public class Departamento 
 {
-	
+
+	/*------------------------------------------------------------------------
+	 * 
+	 * 							ATRIBUTOS
+	 * 
+	 *-----------------------------------------------------------------------*/
+
 	/**
 	 * 
-	 * ATRIBUTOS
+	 */
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
+	/**
 	 * 
 	 */
-	//id do departamento
-	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Long id;
-	
-	@Column(unique=true)
-	// nome do departamento
+	@NotBlank(message = " Não pode ser nulo")
+	@Column(unique = true, nullable = false)
 	private String nome;
-	
-	//descrição do departamento
+
+	/**
+	 * 
+	 */
+	@NotBlank(message = " Não pode ser nulo")
+	@Column(nullable = false)
 	private String descricao;
-	
-	//departamento vinculado a esse departamento
-	@ManyToOne(fetch=FetchType.EAGER)
+
+	/**
+	 * 
+	 */
+	@ManyToOne(fetch = FetchType.EAGER)
 	private Departamento departamentoPai;
-	
+	/**
+	 * 
+	 */
 	@Column(columnDefinition = "integer default 0")
-	//quantidade de usuários do departamento
 	private Long qtdUsuarios;
-	
-	
-	public Long getQtdUsuarios()
+
+
+	/*------------------------------------------------------------------------
+	 * 
+	 * 							GETTERS, SETTERS, BEHAVIORS
+	 * 
+	 *-----------------------------------------------------------------------*/
+	/**
+	 * 
+	 * @return
+	 */
+	public Long getQtdUsuarios() 
 	{
 		return qtdUsuarios;
 	}
-
+	
 	/**
-	 * GETTERS E SETTERS
 	 * 
+	 * @param qtdUsuarios
 	 */
 	public void setQtdUsuarios(Long qtdUsuarios) 
 	{
 		this.qtdUsuarios = qtdUsuarios;
 	}
 
-	
+	/**
+	 * 
+	 * @return
+	 */
 	public Departamento getDepartamento() 
 	{
 		return departamentoPai;
 	}
 
+	/**
+	 * 
+	 * @param departamento
+	 */
 	public void setDepartamento(Departamento departamento) 
 	{
-		if (this.departamentoPai != departamento)
-		{
-		this.departamentoPai = departamento;
+		if (this.departamentoPai != departamento) {
+			this.departamentoPai = departamento;
 		}
 	}
-	public void unsetDepartamento()
+
+	/**
+	 * 
+	 */
+	public void unsetDepartamento() 
 	{
-		this.departamentoPai=null;
+		this.departamentoPai = null;
 	}
-	public Long getId()
+
+	/**
+	 * 
+	 * @return
+	 */
+	public Long getId() 
 	{
 		return id;
 	}
-	
+
+	/**
+	 * 
+	 * @param id
+	 */
 	public void setId(Long id) 
 	{
 		this.id = id;
 	}
-	
+
+	/**
+	 * 
+	 * @return
+	 */
 	public String getNome() 
 	{
 		return nome;
 	}
-	
+
+	/**
+	 * 
+	 * @param nome
+	 */
 	public void setNome(String nome) 
 	{
 		this.nome = nome;
 	}
-	
+
+	/**
+	 * 
+	 * @return
+	 */
 	public String getDescricao()
 	{
 		return descricao;
 	}
-	
+
+	/**
+	 * 
+	 * @param descricao
+	 */
 	public void setDescricao(String descricao)
 	{
 		this.descricao = descricao;
 	}
-	
-	/**
+
+	/*------------------------------------------------------------------------
 	 * 
-	 * HASH E EQUALS
-	 */
+	 * 							HASH E EQUALS
+	 * 
+	 *-----------------------------------------------------------------------*/
 
 	@Override
-	public int hashCode() {
+	public int hashCode() 
+	{
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((departamentoPai == null) ? 0 : departamentoPai.hashCode());
@@ -120,8 +181,12 @@ public class Departamento
 		return result;
 	}
 
+	/**
+	 * 
+	 */
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(Object obj) 
+	{
 		if (this == obj)
 			return true;
 		if (obj == null)
@@ -129,32 +194,37 @@ public class Departamento
 		if (getClass() != obj.getClass())
 			return false;
 		Departamento other = (Departamento) obj;
-		if (departamentoPai == null) {
+		if (departamentoPai == null) 
+		{
 			if (other.departamentoPai != null)
 				return false;
 		} else if (!departamentoPai.equals(other.departamentoPai))
 			return false;
-		if (descricao == null) {
+		if (descricao == null) 
+		{
 			if (other.descricao != null)
 				return false;
 		} else if (!descricao.equals(other.descricao))
 			return false;
-		if (id == null) {
+		if (id == null) 
+		{
 			if (other.id != null)
 				return false;
 		} else if (!id.equals(other.id))
 			return false;
-		if (nome == null) {
+		if (nome == null) 
+		{
 			if (other.nome != null)
 				return false;
 		} else if (!nome.equals(other.nome))
 			return false;
-		if (qtdUsuarios == null) {
+		if (qtdUsuarios == null) 
+		{
 			if (other.qtdUsuarios != null)
 				return false;
 		} else if (!qtdUsuarios.equals(other.qtdUsuarios))
 			return false;
 		return true;
 	}
-	
+
 }
